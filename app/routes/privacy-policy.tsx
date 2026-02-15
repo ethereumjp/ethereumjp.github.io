@@ -112,7 +112,7 @@ export default createRoute((c) => {
               If you have any questions about this Privacy Policy or how your
               data is handled, please contact us at:
             </p>
-            <p>privacy [at] ethtokyo.org</p>
+            <p>privsec [at] ethtokyo.org</p>
           </section>
         </div>
       </StaticPage>

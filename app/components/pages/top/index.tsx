@@ -71,15 +71,50 @@ export default function TopPage() {
               </li>
             </ul>
           </ul>
-          <div class="flex items-center justify-center">
-            <a
-              class="btn mx-auto"
-              href="https://t.me/ethtokyo"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get Involved
-            </a>
+          <div class="max-w-3xl mx-auto">
+            <h3 class="font-bold text-center text-2xl pb-5">Get Involved</h3>
+            <div class="flex items-center justify-center">
+              <a
+                class="btn mx-auto"
+                href="https://luma.com/eth-tokyo"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Event calendar
+              </a>
+              {/* <a
+                class="btn mx-auto"
+                href="https://example.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Tickets & Registration
+              </a> */}
+              {/* <a
+                class="btn mx-auto"
+                href="https://speak.ethtokyo.org/conference-2026"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Speakers apply
+              </a> */}
+              <a
+                class="btn mx-auto"
+                href="https://forms.ethtokyo.org/p/volunteer-signup"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Volunteer with us
+              </a>
+              <a
+                class="btn mx-auto"
+                href="https://forms.ethtokyo.org/p/sponsor-inquiry"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Support us
+              </a>
+            </div>
           </div>
         </div>
       </div>
