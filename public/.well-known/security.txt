@@ -1,0 +1,4 @@
+Contact: privsec@ethtokyo.org
+Expires: 2028-2-15T23:35:00.000Z
+Preferred-Languages: en, ja
+Canonical: https://www.ethtokyo.org/.well-known/security.txt
