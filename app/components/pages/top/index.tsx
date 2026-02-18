@@ -100,7 +100,7 @@ export default function TopPage() {
               </a> */}
               <a
                 class="btn mx-auto"
-                href="https://forms.ethtokyo.org/p/volunteer-signup"
+                href="https://forms.ethtokyo.org/s/cmlnxwceh006ymb01dwi4qzwi"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -108,7 +108,7 @@ export default function TopPage() {
               </a>
               <a
                 class="btn mx-auto"
-                href="https://forms.ethtokyo.org/p/sponsor-inquiry"
+                href="https://forms.ethtokyo.org/s/cmlnj26ir000hmb01cqrqdou2"
                 target="_blank"
                 rel="noopener noreferrer"
               >
