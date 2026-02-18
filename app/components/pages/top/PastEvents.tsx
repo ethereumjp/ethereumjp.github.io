@@ -54,8 +54,7 @@ export default function PastEvents() {
         </a>
         <a
           class="btn"
-          href="https://ethereumjp.github.io/ethtokyo-25/"
-          target="_blank"
+          href="https://www.ethtokyo.org/ethtokyo-25/"
           rel="noopener noreferrer"
         >
           2025 web &#x2197;
