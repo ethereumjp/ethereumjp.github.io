@@ -3,6 +3,12 @@ import SimpleIcon from "@/components/ui/SimpleIcon";
 
 const target = "newsletter";
 
+const validateEmailAddress = (email: string) => {
+  const re =
+    /^([a-zA-Z0-9_-]+(?:.[a-zA-Z0-9_-]+)*)@((?:[a-zA-Z0-9_-]+.)*[a-zA-Z0-9_][a-zA-Z0-9_-]{0,66})[.]([a-z]{2,6}(?:.[a-z]{2})?)$/;
+  return re.test(email);
+};
+
 export default function NewsletterDialog() {
   const [sendStatus, setSendStatus] = useState(0);
 
@@ -14,11 +20,14 @@ export default function NewsletterDialog() {
     const email = (form.elements.namedItem("email") as HTMLInputElement)
       .value as string;
 
+    if (!validateEmailAddress(email)) {
+      setSendStatus(3);
+      throw new Error("Invalid email address.");
+    }
+
     try {
       const response = await fetch(
-        `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE}/${
-          import.meta.env.VITE_AIRTABLE_TABLE
-        }`,
+        `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE}/${import.meta.env.VITE_AIRTABLE_TABLE}`,
         {
           method: "POST",
           headers: {
@@ -60,6 +69,8 @@ export default function NewsletterDialog() {
         return "Sending...";
       case 2:
         return "Subscribed";
+      case 3:
+        return "Failed.";
       default:
         return "Subscribe";
     }
