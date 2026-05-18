@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # setup
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20.x
+          node-version: 24.x
           cache: "pnpm"
       
       # dependencies
@@ -37,7 +37,7 @@ jobs:
       
       # build
       - name: restore build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/dist
           key: ${{ runner.os }}-build-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -54,7 +54,7 @@ jobs:
       # upload
       - name: Upload pages artifact
         if: github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3 
+        uses: actions/upload-pages-artifact@v5
         with:
           path: './dist'
 
@@ -66,7 +66,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - name: Publish to Github pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
