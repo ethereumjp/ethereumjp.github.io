@@ -1,12 +1,5 @@
-export default function Logo({
-  klass,
-  stroke = 40,
-}: {
-  klass?: string;
-  stroke?: number;
-}) {
+const Logo = ({ klass, stroke = 40 }: { klass?: string; stroke?: number }) => {
   return (
-    // biome-ignore lint/a11y/noSvgWithoutTitle: logo svg
     <svg
       width="2700"
       height="1632"
@@ -15,6 +8,7 @@ export default function Logo({
       xmlns="http://www.w3.org/2000/svg"
       class={klass}
     >
+      <title>ETHTokyo Logo</title>
       <path
         d="M1680.41 1592.14L1857.11 876.102L2221.68 376.45L2364.9 280.22L1680.41 1592.14Z"
         stroke="currentColor"
@@ -66,4 +60,6 @@ export default function Logo({
       />
     </svg>
   );
-}
+};
+
+export default Logo;

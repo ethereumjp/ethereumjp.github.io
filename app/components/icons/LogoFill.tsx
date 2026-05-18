@@ -6,7 +6,6 @@ export default function LogoFill({
   stroke?: number;
 }) {
   return (
-    // biome-ignore lint/a11y/noSvgWithoutTitle: logo svg
     <svg
       width="2700"
       height="1632"
@@ -14,6 +13,7 @@ export default function LogoFill({
       fill="none"
       class={klass}
     >
+      <title>ETHTokyo Logo (filled)</title>
       <path
         d="M1680.41 1592.14L1857.11 876.102L2221.68 376.45L2364.9 280.22L1680.41 1592.14Z"
         stroke="currentColor"
