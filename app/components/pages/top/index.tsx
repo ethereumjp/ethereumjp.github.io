@@ -42,10 +42,15 @@ export default function TopPage() {
             <li class="text-lg">ETHTokyo Week&nbsp;:&nbsp;Sep 19-27, 2026</li>
             <ul class="list-disc list-outside pl-4 mb-6">
               <li>
-                Ethereum Institutional Summit : <i>TBA</i>
-              </li>
-              <li>
-                Decentralized AI Summit : <i>TBA</i>
+                <a
+                  class="ext"
+                  href="https://luma.com/0xoaxqaq"
+                  target="_blank"
+                  rel="noopener noreferer"
+                >
+                  Decentralized AI Summit
+                </a>
+                &nbsp;:&nbsp; Sep 23
               </li>
               <li>
                 <a
@@ -57,6 +62,17 @@ export default function TopPage() {
                   Pragma Tokyo 2026
                 </a>
                 &nbsp;:&nbsp; Sep 24
+              </li>
+              <li>
+                <a
+                  class="ext"
+                  href="https://luma.com/154ptgo7"
+                  target="_blank"
+                  rel="noopener noreferer"
+                >
+                  Ethereum Institutional Summit
+                </a>
+                &nbsp;:&nbsp; Sep 25
               </li>
               <li>
                 <a

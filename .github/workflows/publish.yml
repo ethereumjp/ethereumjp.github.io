@@ -46,7 +46,7 @@ jobs:
         if: steps.build-cache.outputs.cache-hit != 'true'
         run: pnpm run build
         env:
-          NODE_ENV: production
+          DO_NOT_TRACK: 1
           VITE_AIRTABLE_PAT: ${{ secrets.VITE_AIRTABLE_PAT }}
           VITE_AIRTABLE_BASE: ${{ secrets.VITE_AIRTABLE_BASE }}
           VITE_AIRTABLE_TABLE: ${{ secrets.VITE_AIRTABLE_TABLE }}
