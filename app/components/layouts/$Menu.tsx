@@ -1,10 +1,10 @@
 import { useState } from "hono/jsx";
 import LogoIcon from "@/components/icons/Logo";
-import DarkModeButton from "@/components/layouts/$DarkModeButton";
+
+//import DarkModeButton from "@/components/layouts/$DarkModeButton";
 
 function MenuIcon({ isOpen }: { isOpen: boolean }) {
   return (
-    // biome-ignore lint/a11y/noSvgWithoutTitle: menu icon
     <svg
       class="w-6 h-6"
       viewBox="0 0 256 256"
@@ -12,6 +12,7 @@ function MenuIcon({ isOpen }: { isOpen: boolean }) {
       width="32"
       height="32"
     >
+      <title>menu icon</title>
       {isOpen ? (
         <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z" />
       ) : (
@@ -86,9 +87,9 @@ export default function Menu() {
             </ul>
           </nav>
         </div>
-        <div class="flex items-center gap-2 px-4">
+        {/* <div class="flex items-center gap-2 px-4">
           <DarkModeButton />
-        </div>
+        </div> */}
       </div>
     </header>
   );

@@ -6,7 +6,6 @@ export default function LogoGradient({
   stroke?: number;
 }) {
   return (
-    // biome-ignore lint/a11y/noSvgWithoutTitle: logo
     <svg
       class={klass}
       width="2700"
@@ -15,6 +14,7 @@ export default function LogoGradient({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>ETHTokyo Logo (colored)</title>
       <defs>
         <style>
           {`

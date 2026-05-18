@@ -6,7 +6,6 @@ export default function LogoText({
   stroke?: number;
 }) {
   return (
-    // biome-ignore lint/a11y/noSvgWithoutTitle: logo
     <svg
       class={klass}
       width="2700"
@@ -15,6 +14,7 @@ export default function LogoText({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>ETHTokyo LogoType</title>
       <rect width="2700" height="1990" fill="none" />
       <path
         d="M480.527 1717.82V1781.09H402.934V1815.05H476.202V1878.34H402.934V1913.63H480.527V1976.91H329.664V1717.82H480.527Z"
