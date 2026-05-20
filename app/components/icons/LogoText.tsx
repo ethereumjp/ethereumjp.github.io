@@ -1,10 +1,10 @@
-export default function LogoText({
+const LogoText = ({
   klass,
   stroke = 10,
 }: {
   klass?: string;
   stroke?: number;
-}) {
+}) => {
   return (
     <svg
       class={klass}
@@ -108,4 +108,6 @@ export default function LogoText({
       />
     </svg>
   );
-}
+};
+
+export default LogoText;

@@ -2,7 +2,7 @@ import Logo from "@/components/icons/LogoGradient";
 import Layout from "@/components/layouts/MainLayout";
 import PastEvents from "@/components/pages/top/PastEvents";
 
-export default function TopPage() {
+const TopPage = () => {
   return (
     <Layout>
       <div class="w-full pt-20 pb-8 px-6 border-b">
@@ -305,4 +305,6 @@ export default function TopPage() {
       </div>
     </Layout>
   );
-}
+};
+
+export default TopPage;

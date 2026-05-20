@@ -1,6 +1,6 @@
 import { SITE_DESCRIPTION, SITE_DOMAIN, SITE_TITLE, SITE_URL } from "@/const";
 
-export default function Meta() {
+const Meta = () => {
   return (
     <>
       <meta name="description" content={SITE_DESCRIPTION} />
@@ -17,4 +17,6 @@ export default function Meta() {
       <meta name="twitter:image" content={`${SITE_URL}images/ogp.png`} />
     </>
   );
-}
+};
+
+export default Meta;

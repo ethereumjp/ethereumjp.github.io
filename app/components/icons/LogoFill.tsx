@@ -1,10 +1,10 @@
-export default function LogoFill({
+const LogoFill = ({
   klass,
   stroke = 40,
 }: {
   klass?: string;
   stroke?: number;
-}) {
+}) => {
   return (
     <svg
       width="2700"
@@ -65,4 +65,6 @@ export default function LogoFill({
       />
     </svg>
   );
-}
+};
+
+export default LogoFill;

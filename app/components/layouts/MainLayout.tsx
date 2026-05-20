@@ -2,7 +2,7 @@ import type { Child } from "hono/jsx";
 import Menu from "@/components/layouts/$Menu";
 import Footer from "@/components/layouts/Footer";
 
-export default function Layout({ children }: { children: Child }) {
+const Layout = ({ children }: { children: Child }) => {
   return (
     <>
       <Menu />
@@ -12,4 +12,6 @@ export default function Layout({ children }: { children: Child }) {
       </div>
     </>
   );
-}
+};
+
+export default Layout;

@@ -1,7 +1,6 @@
 import { useState } from "hono/jsx";
 import LogoIcon from "@/components/icons/Logo";
-
-//import DarkModeButton from "@/components/layouts/$DarkModeButton";
+import DarkModeButton from "@/components/layouts/$DarkModeButton";
 
 function MenuIcon({ isOpen }: { isOpen: boolean }) {
   return (
@@ -87,9 +86,9 @@ export default function Menu() {
             </ul>
           </nav>
         </div>
-        {/* <div class="flex items-center gap-2 px-4">
+        <div class="flex items-center gap-2 px-4">
           <DarkModeButton />
-        </div> */}
+        </div>
       </div>
     </header>
   );

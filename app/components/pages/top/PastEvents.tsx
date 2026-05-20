@@ -1,4 +1,4 @@
-export default function PastEvents() {
+const PastEvents = () => {
   const images = [
     "/images/2025/conf1.jpg",
     "/images/2025/conf2.jpg",
@@ -62,4 +62,6 @@ export default function PastEvents() {
       </div>
     </div>
   );
-}
+};
+
+export default PastEvents;

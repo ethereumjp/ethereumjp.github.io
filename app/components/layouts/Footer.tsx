@@ -3,7 +3,7 @@ import NewsletterPopover from "@/components/ui/$NewsletterPopover";
 import SimpleIcon from "@/components/ui/SimpleIcon";
 import { GITHUB_URL, TELEGRAM_GROUP_LINK, TWITTER_ID } from "@/const";
 
-export default function Footer() {
+const Footer = () => {
   return (
     <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 md:flex-row md:justify-between">
       <ul class="inline-flex gap-4 font-bold">
@@ -71,4 +71,6 @@ export default function Footer() {
       {/* <p class="text-sm">&copy;2025 ETHTokyo.</p> */}
     </div>
   );
-}
+};
+
+export default Footer;

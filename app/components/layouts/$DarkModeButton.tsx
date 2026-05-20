@@ -6,7 +6,7 @@ const target = "theme";
 
 type Theme = "dark" | "light";
 
-export default function DarkModeToggle() {
+const DarkModeToggle = () => {
   const [darkMode, setDarkMode] = useState<Theme>("dark");
 
   useEffect(() => {
@@ -31,4 +31,6 @@ export default function DarkModeToggle() {
       </button>
     </div>
   );
-}
+};
+
+export default DarkModeToggle;

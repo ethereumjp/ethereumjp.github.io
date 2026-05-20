@@ -9,7 +9,7 @@ const validateEmailAddress = (email: string) => {
   return re.test(email);
 };
 
-export default function NewsletterDialog() {
+const NewsletterDialog = () => {
   const [sendStatus, setSendStatus] = useState(0);
 
   const handleSubmit = async (e: Event) => {
@@ -123,4 +123,6 @@ export default function NewsletterDialog() {
       </div>
     </>
   );
-}
+};
+
+export default NewsletterDialog;

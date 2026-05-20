@@ -1,10 +1,10 @@
-export default function LogoGradient({
+const LogoGradient = ({
   klass,
   stroke = 16,
 }: {
   klass?: string;
   stroke?: number;
-}) {
+}) => {
   return (
     <svg
       class={klass}
@@ -132,4 +132,6 @@ export default function LogoGradient({
       />
     </svg>
   );
-}
+};
+
+export default LogoGradient;
