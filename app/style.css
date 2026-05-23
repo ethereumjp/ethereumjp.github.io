@@ -56,14 +56,6 @@ a {
   @apply hover:text-secondary;
 }
 
-a.ext {
-  @apply underline;
-
-  &:after {
-    content: "\2197";
-  }
-}
-
 input {
   @apply p-2 rounded-sm border outline-none;
 }

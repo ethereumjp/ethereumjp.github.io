@@ -26,9 +26,11 @@ export default function Menu() {
 
   const navItems = [
     { href: "/", label: "Home", enabled: true },
-    { href: "/manifesto", label: "Manifesto", enabled: true },
-    { href: "#", label: "Schedule", enabled: false },
-    { href: "#", label: "Access", enabled: false },
+    {
+      href: "https://forms.ethtokyo.org/p/event-submission",
+      label: "Submit Event",
+      enabled: true,
+    },
   ];
 
   return (
@@ -73,6 +75,18 @@ export default function Menu() {
                       href={item.href}
                       class="block py-3 sm:py-0 w-full h-full sm:flex sm:items-center"
                       onClick={() => setIsOpen(false)}
+                      target={
+                        item.href.startsWith("http://") ||
+                        item.href.startsWith("https://")
+                          ? "_blank"
+                          : undefined
+                      }
+                      rel={
+                        item.href.startsWith("http://") ||
+                        item.href.startsWith("https://")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                     >
                       {item.label}
                     </a>

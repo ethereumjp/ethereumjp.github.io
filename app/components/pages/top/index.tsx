@@ -2,13 +2,27 @@ import Logo from "@/components/icons/LogoGradient";
 import Layout from "@/components/layouts/MainLayout";
 import PastEvents from "@/components/pages/top/PastEvents";
 
+// ExternalLink component for consistent styling
+const ExternalLink = ({ href, children, ...props }: any) => (
+  <a
+    href={href}
+    class="ext underline decoration-dotted underline-offset-2 hover:text-secondary"
+    target="_blank"
+    rel={props.rel || "noopener noreferrer"}
+    {...props}
+  >
+    <span>{children}</span>
+    <span style={{ fontSize: "0.8em", verticalAlign: "super" }}>↗︎</span>
+  </a>
+);
+
 const TopPage = () => {
   return (
     <Layout>
       <div class="w-full pt-20 pb-8 px-6 border-b">
         <div class="max-w-3xl mx-auto flex flex-col gap-4">
           <Logo klass="max-w-80 h-auto mx-auto pl-4" stroke={12} />
-          <h1 class="text-4xl mt-14 font-mono font-bold">ETHTokyo'26</h1>
+          <h1 class="text-4xl mt-14 font-mono font-bold">ETHTokyo week 2026</h1>
           <p class="text-2xl">
             🗓️ September 19-27, 2026
             <br />📍 Tokyo, Japan
@@ -25,8 +39,9 @@ const TopPage = () => {
             Ethereum.
           </p>
           <p class="mt-4">
-            ETHTokyo'26 will be held from September 19 to 27, 2026, featuring
-            conferences, events, and hackathons during the period.
+            This year's ETHTokyo week will be held from September 19 to 27,
+            2026, featuring conferences, events, and hackathons during the
+            period.
           </p>
           <div class="flex items-center justify-center pt-4">
             <a class="btn mx-auto" href="/manifesto">
@@ -39,50 +54,42 @@ const TopPage = () => {
         <div class="max-w-3xl mx-auto">
           <h3 class="font-bold text-center text-2xl pb-5">Schedule</h3>
           <ul class="list-disc list-outside pl-6">
-            <li class="text-lg">ETHTokyo Week&nbsp;:&nbsp;Sep 19-27, 2026</li>
+            <li class="text-lg">ETHTokyo week&nbsp;:&nbsp;Sep 19-27, 2026</li>
             <ul class="list-disc list-outside pl-4 mb-6">
               <li>
-                <a
-                  class="ext"
+                <ExternalLink
                   href="https://luma.com/0xoaxqaq"
-                  target="_blank"
                   rel="noopener noreferer"
                 >
                   Decentralized AI Summit
-                </a>
+                </ExternalLink>
                 &nbsp;:&nbsp; Sep 23
               </li>
               <li>
-                <a
-                  class="ext"
+                <ExternalLink
                   href="https://ethglobal.com/events/pragma-tokyo2026"
-                  target="_blank"
                   rel="noopener noreferer"
                 >
                   Pragma Tokyo 2026
-                </a>
+                </ExternalLink>
                 &nbsp;:&nbsp; Sep 24
               </li>
               <li>
-                <a
-                  class="ext"
+                <ExternalLink
                   href="https://luma.com/154ptgo7"
-                  target="_blank"
                   rel="noopener noreferer"
                 >
                   Ethereum Institutional Summit
-                </a>
+                </ExternalLink>
                 &nbsp;:&nbsp; Sep 25
               </li>
               <li>
-                <a
-                  class="ext"
+                <ExternalLink
                   href="https://ethglobal.com/events/tokyo2026"
-                  target="_blank"
                   rel="noopener noreferer"
                 >
                   ETHGlobal Tokyo 2026
-                </a>
+                </ExternalLink>
                 &nbsp;:&nbsp; Sep 25-27
               </li>
             </ul>
@@ -109,7 +116,6 @@ const TopPage = () => {
               <a
                 class="btn mx-auto flex items-center"
                 href="https://forms.ethtokyo.org/p/event-submission"
-                target="_blank"
                 rel="noopener noreferrer"
               >
                 <svg
@@ -153,7 +159,6 @@ const TopPage = () => {
               <a
                 class="btn mx-auto flex items-center"
                 href="https://forms.ethtokyo.org/p/sponsor-inquiry"
-                target="_blank"
                 rel="noopener noreferrer"
               >
                 <svg
@@ -172,7 +177,6 @@ const TopPage = () => {
               <a
                 class="btn mx-auto flex items-center"
                 href="https://forms.ethtokyo.org/p/volunteer-signup"
-                target="_blank"
                 rel="noopener noreferrer"
               >
                 <svg
@@ -200,23 +204,19 @@ const TopPage = () => {
               <h4 class="font-bold text-lg mb-2">✈️ Traveling to Tokyo</h4>
               <div>
                 Tokyo has two airports:&nbsp;
-                <a
-                  class="ext"
+                <ExternalLink
                   href="https://maps.app.goo.gl/pEzYqQj1HuTY3ctD7"
-                  target="_blank"
                   rel="noreferer noopener"
                 >
                   Narita International Airport (NRT)
-                </a>
+                </ExternalLink>
                 &nbsp;and&nbsp;
-                <a
-                  class="ext"
+                <ExternalLink
                   href="https://maps.app.goo.gl/C1rgT7mBmtXzULy68"
-                  target="_blank"
                   rel="noreferer noopener"
                 >
                   Haneda International Airport (HND)
-                </a>
+                </ExternalLink>
                 . They are both well connected with the railway system.
               </div>
             </div>
@@ -228,23 +228,19 @@ const TopPage = () => {
                   the times, the quickest and easiest way to getting from A to B
                   is by trains and buses. If you are staying longer than just a
                   few days, you might want to consider purchasing a&nbsp;
-                  <a
-                    class="ext"
+                  <ExternalLink
                     href="https://www.jreast.co.jp/multi/en/pass/suica.html"
-                    target="_blank"
                     rel="noreferrer noopener"
                   >
                     SUICA
-                  </a>
+                  </ExternalLink>
                   &nbsp;or&nbsp;
-                  <a
-                    class="ext"
+                  <ExternalLink
                     href="https://www.pasmo.co.jp/visitors/en/"
-                    target="_blank"
                     rel="noreferrer noopener"
                   >
                     PASMO
-                  </a>
+                  </ExternalLink>
                   &nbsp; card at for the best experience, which can be obtained
                   at pretty much any train station. You can use these cards to
                   ride the buses also.
@@ -253,46 +249,38 @@ const TopPage = () => {
                   <strong>🛴 Scooters & Bikes</strong> : Depending on the area,
                   you will also find scooters and bikes that you can grab around
                   the city, using apps like{" "}
-                  <a
-                    class="ext"
+                  <ExternalLink
                     href="https://play.google.com/store/apps/details?id=sc.luup.luup"
-                    target="_blank"
                     rel="noreferrer noopener"
                   >
                     LUUP
-                  </a>
+                  </ExternalLink>
                   &nbsp;and&nbsp;
-                  <a
-                    class="ext"
+                  <ExternalLink
                     href="https://play.google.com/store/apps/details?id=com.limebike"
-                    target="_blank"
                     rel="noreferrer noopener"
                   >
                     LIME
-                  </a>
+                  </ExternalLink>
                   . You should take precaution to stay safe since the streets in
                   Tokyo are generally narrow and crowded.
                 </p>
                 <p>
                   <strong>🚖 Taxis</strong> : Taxis are available through apps
                   like&nbsp;
-                  <a
+                  <ExternalLink
                     href="https://play.google.com/store/apps/details?id=com.dena.automotive.taxibell"
-                    class="ext"
-                    target="_blank"
                     rel="noreferrer noopener"
                   >
                     GO
-                  </a>
+                  </ExternalLink>
                   &nbsp;and&nbsp;
-                  <a
+                  <ExternalLink
                     href="https://play.google.com/store/apps/details?id=com.ubercab"
-                    class="ext"
-                    target="_blank"
                     rel="noreferrer noopener"
                   >
                     Uber
-                  </a>
+                  </ExternalLink>
                   .
                 </p>
               </div>
