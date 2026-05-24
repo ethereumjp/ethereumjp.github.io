@@ -1,5 +1,6 @@
 import Logo from "@/components/icons/LogoGradient";
 import Layout from "@/components/layouts/MainLayout";
+import Contributors from "@/components/pages/top/Contributors";
 import { involvementLinks, scheduleItems } from "@/components/pages/top/data";
 import PastEvents from "@/components/pages/top/PastEvents";
 import Section from "@/components/pages/top/Section";
@@ -131,6 +132,10 @@ const TopPage = () => {
       <div class="w-full pt-8 pb-9">
         <PastEvents />
       </div>
+
+      <Section title="Our Team" className="border-t">
+        <Contributors />
+      </Section>
     </Layout>
   );
 };
