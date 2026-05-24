@@ -82,3 +82,54 @@ export const pastEventImages = [
   "/images/2025/hack1.jpg",
   "/images/2025/hack2.jpg",
 ];
+
+export const contributors = [
+  {
+    name: "Irohas",
+    handle: "irohas.eth",
+    role: "Lead",
+    href: "https://neila.github.io/me",
+  },
+  {
+    name: "Yuta",
+    handle: "kurotaky.eth",
+    role: "Lead",
+    href: "https://x.com/kurotaky",
+  },
+  {
+    name: "Yudai",
+    handle: "reblock.eth",
+    role: "Ops & partnerships",
+    href: "https://twitter.com/9dai_5",
+  },
+  {
+    name: "Toshi",
+    handle: "toshihiko.eth",
+    role: "Ops & partnerships",
+    href: "https://twitter.com/tolehico",
+  },
+  {
+    name: "Torrent",
+    handle: "torrentshinoda.eth",
+    role: "Operations",
+    href: "https://twitter.com/TRNT_MST",
+  },
+  {
+    name: "Yosuke",
+    handle: "yosuke.eth",
+    role: "Development",
+    href: "https://github.com/yosukemiyata",
+  },
+  {
+    name: "Yuji",
+    handle: "yujiym.eth",
+    role: "Development",
+    href: "https://github.com/yujiym",
+  },
+  {
+    name: "Seiya",
+    handle: "silmin.eth",
+    role: "Design",
+    href: "https://silmin.net/",
+  },
+];
