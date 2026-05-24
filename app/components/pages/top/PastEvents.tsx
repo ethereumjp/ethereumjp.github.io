@@ -1,13 +1,6 @@
-const PastEvents = () => {
-  const images = [
-    "/images/2025/conf1.jpg",
-    "/images/2025/conf2.jpg",
-    "/images/2025/conf3.jpg",
-    "/images/2025/conf4.jpg",
-    "/images/2025/hack1.jpg",
-    "/images/2025/hack2.jpg",
-  ];
+import { pastEventImages } from "@/components/pages/top/data";
 
+const PastEvents = () => {
   return (
     <div class="py-10 overflow-hidden">
       <div class="max-w-3xl mx-auto px-4">
@@ -15,7 +8,7 @@ const PastEvents = () => {
       </div>
       <div class="flex overflow-hidden gap-2 md:gap-4 marquee py-4">
         <div class="flex shrink-0 justify-start gap-2 md:gap-4 min-w-max animate-marquee">
-          {images.map((src, i) => (
+          {pastEventImages.map((src, i) => (
             <div key={i} class="h-48 shrink-0">
               <img
                 src={src}
@@ -31,7 +24,7 @@ const PastEvents = () => {
           class="flex shrink-0 justify-start gap-2 md:gap-4 min-w-max animate-marquee"
           aria-hidden="true"
         >
-          {images.map((src, i) => (
+          {pastEventImages.map((src, i) => (
             <div key={`dup-${i}`} class="h-48 shrink-0">
               <img
                 src={src}
