@@ -26,6 +26,7 @@ export default function Menu() {
 
   const navItems = [
     { href: "/", label: "Home", enabled: true },
+    { href: "/manifesto", label: "Manifesto", enabled: true },
     {
       href: "https://forms.ethtokyo.org/p/event-submission",
       label: "Submit Event",
