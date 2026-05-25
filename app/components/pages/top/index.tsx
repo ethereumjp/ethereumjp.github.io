@@ -23,13 +23,25 @@ const TopPage = () => {
 
       <Section title="What is ETHTokyo?">
         <p>
-          We are a community of Tokyo-based developers and professionals, driven
-          by a shared sense of cypherpunk ethos and optimism for the future,
-          dedicated to advance the development and adoption of Ethereum.
+          ETHTokyo is a Tokyo-based Ethereum community and coordination layer,
+          bringing together builders, researchers, artists, founders,
+          institutions, public-goods contributors, and independent communities
+          around a shared cypherpunk ethos and optimism for the future.
         </p>
         <p class="mt-4">
-          This year's ETHTokyo week will be held from September 19 to 27, 2026,
-          featuring conferences, events, and hackathons during the period.
+          We exist to advance the development, adoption, and cultural relevance
+          of Ethereum from Tokyo — through credible, open, permissionless spaces
+          for people building the next generation of programmable, verifiable,
+          and privacy-preserving systems. Our role is to help Ethereum in Tokyo
+          become more connected, credible, permissionless, and alive — not
+          through one venue or one official narrative, but through a city-wide
+          network of people and events.
+        </p>
+        <p class="mt-4">
+          ETHTokyo Week 2026 will take place from{" "}
+          <strong>September 19 to 27</strong>, featuring community-led events,
+          conferences, workshops, meetups, dinners, hackathons, and other
+          Ethereum-adjacent gatherings across Tokyo.
         </p>
         <div class="flex items-center justify-center pt-4">
           <a class="btn mx-auto" href="/manifesto">
