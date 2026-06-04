@@ -47,9 +47,12 @@ jobs:
         run: pnpm run build
         env:
           DO_NOT_TRACK: 1
-          VITE_AIRTABLE_PAT: ${{ secrets.VITE_AIRTABLE_PAT }}
-          VITE_AIRTABLE_BASE: ${{ secrets.VITE_AIRTABLE_BASE }}
-          VITE_AIRTABLE_TABLE: ${{ secrets.VITE_AIRTABLE_TABLE }}
+          VITE_AIRTABLE_NEWSLETTER_PAT: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_PAT }}
+          VITE_AIRTABLE_NEWSLETTER_BASE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_BASE }}
+          VITE_AIRTABLE_NEWSLETTER_TABLE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_TABLE }}
+          AIRTABLE_EVENTCURATE_PAT: ${{ secrets.AIRTABLE_EVENTCURATE_PAT }}
+          AIRTABLE_EVENTCURATE_BASE: ${{ secrets.AIRTABLE_EVENTCURATE_BASE }}
+          AIRTABLE_EVENTCURATE_TABLE: ${{ secrets.AIRTABLE_EVENTCURATE_TABLE }}
 
       # upload
       - name: Upload pages artifact
