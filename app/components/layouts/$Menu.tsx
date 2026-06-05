@@ -32,6 +32,11 @@ export default function Menu() {
       label: "Submit Event",
       enabled: true,
     },
+    {
+      href: "https://speak.ethtokyo.org/conference-2026",
+      label: "Apply as speaker",
+      enabled: true,
+    },
   ];
 
   return (
