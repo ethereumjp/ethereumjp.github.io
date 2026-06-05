@@ -3,10 +3,9 @@ on:
     branches: ["**"]
   workflow_dispatch:
 
+# Least privilege by default; Pages write scope is granted to the deploy job only.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "publish-${{ github.ref }}"
@@ -22,49 +21,50 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24.x
-          cache: "pnpm"
-      
-      # dependencies
+          cache: "pnpm" # setup-node handles the pnpm store cache
+
+      # dependencies (install always runs; the pnpm store cache above keeps it fast)
       - name: Install packages
-        if: steps.pnpm-cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-      
+
       # scan
       - name: type check
         run: pnpm tsc
       - name: lint/format
         run: pnpm biome ci .
-      
-      # build
-      - name: restore build cache
-        uses: actions/cache@v5
-        with:
-          path: ${{ github.workspace }}/dist
-          key: ${{ runner.os }}-build-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-build-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+
+      # build (clean build every run; no dist cache to avoid stale deploys)
       - name: Build
-        if: steps.build-cache.outputs.cache-hit != 'true'
         run: pnpm run build
         env:
           DO_NOT_TRACK: 1
-          VITE_AIRTABLE_PAT: ${{ secrets.VITE_AIRTABLE_PAT }}
-          VITE_AIRTABLE_BASE: ${{ secrets.VITE_AIRTABLE_BASE }}
-          VITE_AIRTABLE_TABLE: ${{ secrets.VITE_AIRTABLE_TABLE }}
+          # VITE_ vars are intentionally inlined into the client bundle (read from frontend JS)
+          VITE_AIRTABLE_NEWSLETTER_PAT: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_PAT }}
+          VITE_AIRTABLE_NEWSLETTER_BASE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_BASE }}
+          VITE_AIRTABLE_NEWSLETTER_TABLE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_TABLE }}
+          # Reserved for upcoming server-side event-curation feature (not yet referenced in code)
+          AIRTABLE_EVENTCURATE_PAT: ${{ secrets.AIRTABLE_EVENTCURATE_PAT }}
+          AIRTABLE_EVENTCURATE_BASE: ${{ secrets.AIRTABLE_EVENTCURATE_BASE }}
+          AIRTABLE_EVENTCURATE_TABLE: ${{ secrets.AIRTABLE_EVENTCURATE_TABLE }}
 
       # upload
       - name: Upload pages artifact
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v5
         with:
-          path: './dist'
+          path: "./dist"
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    if: github.ref == 'refs/heads/main'
+    # Pages write scope is confined to this job.
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/configure-pages@v6
       - name: Publish to Github pages

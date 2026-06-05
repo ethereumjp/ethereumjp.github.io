@@ -27,11 +27,11 @@ const NewsletterDialog = () => {
 
     try {
       const response = await fetch(
-        `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE}/${import.meta.env.VITE_AIRTABLE_TABLE}`,
+        `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_NEWSLETTER_BASE}/${import.meta.env.VITE_AIRTABLE_NEWSLETTER_TABLE}`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_PAT}`,
+            Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_NEWSLETTER_PAT}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
