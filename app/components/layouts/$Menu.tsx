@@ -33,7 +33,7 @@ export default function Menu() {
       enabled: true,
     },
     {
-      href: "https://speak.ethtokyo.org/conference-2026",
+      href: "https://speak.ethtokyo.org/conference-2026/cfp",
       label: "Apply as speaker",
       enabled: true,
     },
