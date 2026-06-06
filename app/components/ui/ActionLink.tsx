@@ -42,6 +42,7 @@ const ActionLink = ({
     class="btn mx-auto flex items-center"
     href={href}
     rel="noopener noreferrer"
+    target={href.startsWith("/") ? undefined : "_blank"}
   >
     <ActionIcon icon={icon} />
     <span>{children}</span>
