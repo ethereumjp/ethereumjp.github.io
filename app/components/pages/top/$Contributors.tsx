@@ -5,16 +5,25 @@ const getInitial = (name: string) => name.charAt(0).toUpperCase();
 
 const getLinkLabel = (href: string) => {
   const hostname = new URL(href).hostname.replace(/^www\./, "");
-
   if (hostname === "github.com") {
     return "GitHub";
   }
-
   if (hostname === "twitter.com" || hostname === "x.com") {
     return "Twitter";
   }
-
   return "Website";
+};
+
+const handleAvatarError = (event: Event, handle: string) => {
+  const image = event.currentTarget as HTMLImageElement;
+
+  if (image.dataset.fallbackLoaded === "true") {
+    image.hidden = true;
+    return;
+  }
+
+  image.dataset.fallbackLoaded = "true";
+  image.src = `https://metadata.ens.domains/mainnet/avatar/${handle}`;
 };
 
 const Contributors = () => (
@@ -25,8 +34,19 @@ const Contributors = () => (
         class="flex min-h-34 flex-col justify-between rounded-lg border p-4"
       >
         <div class="flex items-center gap-3">
-          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border font-mono text-xl font-bold">
-            {getInitial(contributor.name)}
+          <div class="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden font-mono text-xl font-bold">
+            <span>{getInitial(contributor.name)}</span>
+            <img
+              src={`https://euc.li/${contributor.handle}`}
+              alt={`${contributor.handle} profile`}
+              class="rounded-full border absolute object-cover"
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+              onError={(event: Event) =>
+                handleAvatarError(event, contributor.handle)
+              }
+            />
           </div>
           <div class="min-w-0">
             <h4 class="truncate font-mono font-bold">{contributor.name}</h4>
