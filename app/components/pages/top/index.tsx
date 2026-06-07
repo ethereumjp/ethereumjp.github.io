@@ -1,13 +1,16 @@
 import Logo from "@/components/icons/LogoGradient";
 import Layout from "@/components/layouts/MainLayout";
 import Contributors from "@/components/pages/top/Contributors";
+import CuratedEvents from "@/components/pages/top/CuratedEvents";
 import { involvementLinks, scheduleItems } from "@/components/pages/top/data";
 import PastEvents from "@/components/pages/top/PastEvents";
+import ScheduleFallback from "@/components/pages/top/ScheduleFallback";
 import Section from "@/components/pages/top/Section";
 import ActionLink from "@/components/ui/ActionLink";
 import ExternalLink from "@/components/ui/ExternalLink";
+import type { CuratedEvent } from "@/lib/curated-events";
 
-const TopPage = () => {
+const TopPage = ({ events }: { events: CuratedEvent[] }) => {
   return (
     <Layout>
       <section class="w-full pt-20 pb-8 px-6 border-b">
@@ -51,32 +54,26 @@ const TopPage = () => {
       </Section>
 
       <Section title="Schedule">
-        <ul class="list-disc list-outside pl-6">
-          <li class="text-lg">ETHTokyo week&nbsp;:&nbsp;Sep 19-27, 2026</li>
-          <ul class="list-disc list-outside pl-4 mb-6">
-            {[...scheduleItems]
-              .sort(
-                (a, b) =>
-                  new Date(a.date).getTime() - new Date(b.date).getTime(),
-              )
-              .map((item) => (
-                <li key={item.href}>
-                  <ExternalLink href={item.href}>{item.label}</ExternalLink>
-                  &nbsp;:&nbsp; {item.date}
-                </li>
-              ))}
-          </ul>
-        </ul>
+        <p class="text-lg mb-6">ETHTokyo week&nbsp;:&nbsp;Sep 19-27, 2026</p>
 
-        <div class="max-w-3xl mx-auto">
-          <h3 class="font-bold text-center text-2xl pb-5">Get Involved</h3>
-          <div class="flex items-center justify-center">
-            {involvementLinks.map((item) => (
-              <ActionLink key={item.href} href={item.href} icon={item.icon}>
-                {item.label}
-              </ActionLink>
-            ))}
-          </div>
+        {events.length > 0 ? (
+          <CuratedEvents events={events} />
+        ) : (
+          <ScheduleFallback items={scheduleItems} />
+        )}
+
+        <h3 class="font-bold text-center text-2xl pb-5 mt-8">Get Involved</h3>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-4">
+          {involvementLinks.map((item) => (
+            <ActionLink
+              key={item.href}
+              href={item.href}
+              icon={item.icon}
+              className="btn flex items-center justify-center w-full"
+            >
+              {item.label}
+            </ActionLink>
+          ))}
         </div>
       </Section>
 

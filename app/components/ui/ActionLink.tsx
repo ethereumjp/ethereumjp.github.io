@@ -33,13 +33,15 @@ const ActionLink = ({
   href,
   children,
   icon,
+  className = "btn mx-auto flex items-center",
 }: {
   href: string;
   children: Child;
   icon: Icon;
+  className?: string;
 }) => (
   <a
-    class="btn mx-auto flex items-center"
+    class={className}
     href={href}
     rel="noopener noreferrer"
     target={href.startsWith("/") ? undefined : "_blank"}

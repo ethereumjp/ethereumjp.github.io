@@ -24,6 +24,7 @@
 
 # cache
 **/public/cache
+**/public/images/curated/*
 
 # debug
 **/build-storybook.log*
