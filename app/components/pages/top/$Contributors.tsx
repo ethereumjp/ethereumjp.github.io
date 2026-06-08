@@ -34,12 +34,12 @@ const Contributors = () => (
         class="flex min-h-34 flex-col justify-between rounded-lg border p-4"
       >
         <div class="flex items-center gap-3">
-          <div class="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden font-mono text-xl font-bold">
-            <span>{getInitial(contributor.name)}</span>
+          <div class="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border font-mono text-xl font-bold">
+            <span class="">{getInitial(contributor.name)}</span>
             <img
               src={`https://euc.li/${contributor.handle}`}
               alt={`${contributor.handle} profile`}
-              class="rounded-full border absolute object-cover"
+              class="absolute object-cover"
               loading="lazy"
               decoding="async"
               referrerpolicy="no-referrer"
