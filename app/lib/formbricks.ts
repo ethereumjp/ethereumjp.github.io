@@ -2,7 +2,10 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const FORMBRICKS_HOST = "https://formbricks.ethtokyo.org";
-const THUMBNAIL_OUTPUT_DIR = join(process.cwd(), "public/images/curated");
+const THUMBNAIL_OUTPUT_DIR = join(
+  process.cwd(),
+  "public/images/2026/eventthumbnails",
+);
 
 type FormbricksResponse = {
   id: string;
@@ -39,7 +42,7 @@ const extensionFromContentType = (contentType: string): string => {
 };
 
 export const buildThumbnailFilename = (
-  { name, startDate }: ThumbnailFileInfo,
+  { name }: ThumbnailFileInfo,
   extension: string,
 ): string => {
   const slug = name
@@ -49,7 +52,7 @@ export const buildThumbnailFilename = (
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-  return `${slug || "event"}-${startDate}.${extension}`;
+  return `${slug}.${extension}`;
 };
 
 const extractThumbnailUrl = (
@@ -137,7 +140,7 @@ export const cachePrivateThumbnail = async (
       Buffer.from(await response.arrayBuffer()),
     );
 
-    return `/images/curated/${filename}`;
+    return `/images/2026/eventthumbnails/${filename}`;
   } catch {
     return undefined;
   }

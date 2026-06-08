@@ -1,5 +1,5 @@
 const thumbnailFrameClass =
-  "flex h-20 w-40 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-light/50 p-2 dark:bg-dark/50";
+  "flex h-20 w-40 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-light/50 dark:bg-dark/50";
 
 const EventThumbnail = ({
   name,

@@ -7,12 +7,14 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
     {events.map((event) => (
       <article
         key={event.id}
-        class="flex min-h-34 flex-col rounded-lg border p-4"
+        class="max-h-96 w-60 flex flex-col rounded-lg border p-4"
       >
-        <div class="flex items-start gap-3">
-          <EventThumbnail name={event.name} thumbnail={event.thumbnail} />
-          <div class="min-w-0 flex-1 flex flex-col gap-1">
-            <h4 class="truncate font-mono text-base font-bold md:text-xl">
+        <div class="gap-3">
+          <div class="flex items-center justify-center pb-4">
+            <EventThumbnail name={event.name} thumbnail={event.thumbnail} />
+          </div>
+          <div class="space-y-2 text-center justify-center">
+            <h4 class="font-mono text-base font-bold md:text-xl">
               {event.link ? (
                 <ExternalLink href={event.link}>{event.name}</ExternalLink>
               ) : (
@@ -22,41 +24,44 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
             <p class="text-sm opacity-75">
               {formatEventDate(event.startDate, event.endDate)}
             </p>
-            {event.type ? <p class="text-sm">{event.type}</p> : null}
+            {event.venueName ? (
+              <p class="text-sm">
+                📍{" "}
+                {event.venueLink ? (
+                  <ExternalLink className="text-sm" href={event.venueLink}>
+                    {event.venueName}
+                  </ExternalLink>
+                ) : (
+                  event.venueName
+                )}
+              </p>
+            ) : null}
           </div>
         </div>
 
         <div class="mt-4 flex flex-1 flex-col gap-2">
           {event.description ? (
-            <p class="text-sm opacity-75">{event.description}</p>
+            <p class="truncate text-sm opacity-75">{event.description}</p>
           ) : null}
           {event.groupChatLink ? (
             <ExternalLink className="text-sm" href={event.groupChatLink}>
               Group chat
             </ExternalLink>
           ) : null}
-          {event.organizerEmail ? (
-            <a
-              class="text-sm underline decoration-dotted"
-              href={`mailto:${event.organizerEmail}`}
-            >
-              {event.organizerName ?? event.organizerEmail}
-            </a>
-          ) : null}
+          <div class="flex justify-between">
+            {event.organizerEmail ? (
+              <a
+                class="text-sm underline decoration-dotted py-1"
+                href={`mailto:${event.organizerEmail}`}
+              >
+                {event.organizerName ?? event.organizerEmail}
+              </a>
+            ) : null}
+            {event.type ? (
+              <p class="text-sm border rounded-full py-1 px-2">{event.type}</p>
+            ) : null}
+          </div>
         </div>
-
-        {event.venueName ? (
-          <p class="mt-4 text-sm">
-            📍{" "}
-            {event.venueLink ? (
-              <ExternalLink className="text-sm" href={event.venueLink}>
-                {event.venueName}
-              </ExternalLink>
-            ) : (
-              event.venueName
-            )}
-          </p>
-        ) : null}
       </article>
     ))}
   </div>

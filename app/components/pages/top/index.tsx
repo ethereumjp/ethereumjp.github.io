@@ -54,9 +54,11 @@ const TopPage = ({ events }: { events: CuratedEvent[] }) => {
       </Section>
 
       <Section title="Schedule">
-        <p class="text-lg mb-6">ETHTokyo week&nbsp;:&nbsp;Sep 19-27, 2026</p>
+        <p class="text-lg mb-6 text-center">
+          ETHTokyo week&nbsp;:&nbsp;Sep 19-27, 2026
+        </p>
 
-        {events.length > 0 ? (
+        {events.length > 3 ? (
           <CuratedEvents events={events} />
         ) : (
           <ScheduleFallback items={scheduleItems} />

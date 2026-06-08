@@ -4,8 +4,8 @@ export const SITE_DESCRIPTION =
 export const SITE_URL = "https://www.ethtokyo.org/";
 export const SITE_DOMAIN = "ethtokyo.org";
 
-export const GITHUB_URL = "https://github.com/ethereumjp/ethtokyo-web";
-export const GITHUB_DESGIN_ASSETS_URL =
+export const GITHUB_URL = "https://github.com/ethereumjp/";
+export const GITHUB_DESIGN_ASSETS_URL =
   "https://github.com/ethereumjp/ethtokyo-web/tree/main/public/assets";
 
 export const TELEGRAM_GROUP_LINK = "https://t.me/ethtokyo";

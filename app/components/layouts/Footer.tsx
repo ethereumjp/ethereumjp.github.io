@@ -49,7 +49,7 @@ const Footer = () => {
       <ul class="inline-flex gap-4 text-sm [>a]:font-mono">
         {/* <li>
           <a
-            href={GITHUB_DESGIN_ASSETS_URL}
+            href={GITHUB_DESIGN_ASSETS_URL}
             target="_blank"
             rel="noopener noreferrer"
           >
