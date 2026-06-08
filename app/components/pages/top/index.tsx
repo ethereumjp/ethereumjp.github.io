@@ -1,6 +1,6 @@
 import Logo from "@/components/icons/LogoGradient";
 import Layout from "@/components/layouts/MainLayout";
-import Contributors from "@/components/pages/top/Contributors";
+import Contributors from "@/components/pages/top/$Contributors";
 import CuratedEvents from "@/components/pages/top/CuratedEvents";
 import { involvementLinks, scheduleItems } from "@/components/pages/top/data";
 import PastEvents from "@/components/pages/top/PastEvents";

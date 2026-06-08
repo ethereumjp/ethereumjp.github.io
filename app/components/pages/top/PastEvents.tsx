@@ -39,18 +39,26 @@ const PastEvents = () => {
       <div class="flex pt-4 gap-6 justify-center items-center">
         <a
           class="btn"
+          href="https://speak.ethtokyo.org/conference-2025/speaker/"
+          rel="noopener noreferrer"
+        >
+          Past Speakers &#x2197;
+        </a>
+        <a
+          class="btn"
+          href="https://streameth.org/ethtokyo/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Past Sessions &#x2197;
+        </a>
+        <a
+          class="btn"
           href="https://gallery.ethtokyo.org/?t=BF7XUspX#FYTyVpD9puna7U422M2yrniRpJBpF17ByTa7Xegwy4xk"
           target="_blank"
           rel="noopener noreferrer"
         >
-          2025 gallery &#x2197;
-        </a>
-        <a
-          class="btn"
-          href="https://www.ethtokyo.org/ethtokyo-25/"
-          rel="noopener noreferrer"
-        >
-          2025 web &#x2197;
+          Gallery &#x2197;
         </a>
       </div>
     </div>
