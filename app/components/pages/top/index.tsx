@@ -143,7 +143,7 @@ const TopPage = ({ events }: { events: CuratedEvent[] }) => {
         </div>
       </Section>
 
-      <div class="w-full pt-8 pb-9">
+      <div class="w-full pt-8 pb-9 px-6 border-b">
         <PastEvents />
       </div>
 

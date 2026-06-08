@@ -2,9 +2,9 @@ import { pastEventImages } from "@/components/pages/top/data";
 
 const PastEvents = () => {
   return (
-    <div class="py-10 overflow-hidden">
-      <div class="max-w-3xl mx-auto px-4">
-        <h3 class="font-bold text-center text-2xl pb-8">Past events</h3>
+    <div class="overflow-hidden">
+      <div class="max-w-3xl mx-auto px-6">
+        <h3 class="font-bold text-center text-2xl pb-5">Past events</h3>
       </div>
       <div class="flex overflow-hidden gap-2 md:gap-4 marquee py-4">
         <div class="flex shrink-0 justify-start gap-2 md:gap-4 min-w-max animate-marquee">
@@ -36,7 +36,7 @@ const PastEvents = () => {
           ))}
         </div>
       </div>
-      <div class="flex pt-4 gap-6 justify-center items-center">
+      <div class="flex flex-col md:flex-row pt-4 gap-4 md:gap-6 justify-center items-center">
         <a
           class="btn"
           href="https://speak.ethtokyo.org/conference-2025/speaker/"
