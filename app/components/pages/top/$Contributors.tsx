@@ -96,7 +96,7 @@ const Contributors = () => (
             <span class="">{getInitial(contributor.name)}</span>
             <img
               src={`https://euc.li/${contributor.handle}`}
-              alt={`${contributor.handle} profile`}
+              alt="" // not needed since there is fallback with getInitial() above
               class="absolute object-cover"
               loading="lazy"
               decoding="async"
@@ -115,7 +115,12 @@ const Contributors = () => (
           {/* <p class="text-sm">{contributor.role}</p> */}
           <div class="ml-auto flex gap-2">
             {contributor.href.map((m) => (
-              <a className="text-sm" target="_blank" href={m} rel="noopener">
+              <a
+                className="text-sm"
+                target="_blank"
+                href={m}
+                rel="noopener noreferrer"
+              >
                 {getLinkIcon(m)}
               </a>
             ))}
