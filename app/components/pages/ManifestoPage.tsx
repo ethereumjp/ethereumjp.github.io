@@ -39,7 +39,7 @@ const ManifestoPage = () => (
         <h2 class="font-bold text-lg mb-2">Our thesis</h2>
         <p class="mb-4">
           ETHTokyo is not defined by a single format, venue, or hackathon. It is
-          a coordination layer for Ethereum in Tokyo: a place where builders,
+          a coordination layer for cypherpunks in Tokyo: a place where builders,
           researchers, artists, operators, founders, institutions, and
           independent weirdos can gather around a shared civilizational
           question.
@@ -73,17 +73,17 @@ const ManifestoPage = () => (
             asking institutional permission.
           </li>
           <li>
-            <strong>Commons over capture</strong> — Ethereum only matters if it
-            sustains infrastructure, knowledge, norms, and commons that outlive
-            individual cycles.
+            <strong>Commons over capture</strong> — Technology only matters if
+            it sustains infrastructure, knowledge, norms, and commons that
+            outlive individual cycles.
           </li>
           <li>
-            <strong>Intent over interface</strong> — Ethereum should expand
+            <strong>Intent over interface</strong> — Technology should expand
             human agency first and foremost beyond wallet UX, dashboards, and
             manual transaction clicking.
           </li>
           <li>
-            <strong>Verification over trust</strong> - Crypto must escape
+            <strong>Verification over trust</strong> - We must escape
             self-referential token games; serious systems should make claims
             checkable, whether they concern code, assets, compute, or
             institutional infrastructure. The physical reality is our substrate.
@@ -94,15 +94,14 @@ const ManifestoPage = () => (
             security, experimentation, and dignity.
           </li>
           <li>
-            <strong>Pluralism over monoculture</strong> — Ethereum's strength
-            comes from many clients, L2s, apps, cultures, teams, and scenes, not
-            one official path.
+            <strong>Pluralism over monoculture</strong> — Decentralization's
+            strength comes from many clients, L2s, apps, cultures, teams, and
+            scenes, not one official path.
           </li>
           <li>
             <strong>Localization over globalization</strong> — ETHTokyo aims to
-            connect global Ethereum to Tokyo's actual cultural, institutional,
-            and underground reality rather than importing generic conference
-            aesthetics.
+            connect global cypherpunks to Tokyo's actual cultural,
+            institutional, and underground reality.
           </li>
         </ol>
       </section>
