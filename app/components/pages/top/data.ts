@@ -145,7 +145,7 @@ export const contributors = [
   },
   {
     name: "Yosuke",
-    handle: "yosuke.eth",
+    handle: "y0suke.eth",
     role: "Developer",
     href: ["https://github.com/yosukemiyata"],
   },
