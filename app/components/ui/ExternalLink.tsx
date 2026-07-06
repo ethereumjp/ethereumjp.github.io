@@ -13,12 +13,16 @@ const ExternalLink = ({
 }) => (
   <a
     href={href}
-    class={`ext underline decoration-dotted underline-offset-2 hover:text-secondary ${className}`}
+    class={`ext hover:underline decoration-dotted underline-offset-2 hover:text-secondary ${className}`}
     target="_blank"
     rel={rel}
   >
     <span>{children}</span>
-    <span style={{ fontSize: "0.8em", verticalAlign: "super" }}>↗︎</span>
+    <span
+      style={{ color: "#ff5544", fontSize: "0.8em", verticalAlign: "super" }}
+    >
+      ↗︎
+    </span>
   </a>
 );
 

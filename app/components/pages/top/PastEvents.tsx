@@ -40,6 +40,7 @@ const PastEvents = () => {
         <a
           class="btn"
           href="https://speak.ethtokyo.org/conference-2025/speaker/"
+          target="_blank"
           rel="noopener noreferrer"
         >
           Past Speakers &#x2197;

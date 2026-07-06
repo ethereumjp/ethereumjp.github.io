@@ -66,24 +66,24 @@ const volunteerIcon: Icon = {
 
 export const involvementLinks = [
   {
-    label: "Submit Event",
-    href: "https://forms.ethtokyo.org/p/event-submission",
-    icon: eventIcon,
-  },
-  {
-    label: "Apply as speaker",
+    label: "Apply to speak",
     href: "https://speak.ethtokyo.org/conference-2026/cfp",
     icon: SpeakIcon,
   },
   {
-    label: "Support us",
-    href: "https://forms.ethtokyo.org/p/sponsor-inquiry",
-    icon: supportIcon,
+    label: "Submit Events",
+    href: "https://forms.ethtokyo.org/p/event-submission",
+    icon: eventIcon,
   },
   {
     label: "Join as Volunteer",
     href: "https://forms.ethtokyo.org/p/volunteer-signup",
     icon: volunteerIcon,
+  },
+  {
+    label: "Support us",
+    href: "/donate",
+    icon: supportIcon,
   },
 ];
 
@@ -118,6 +118,26 @@ export const contributors = [
     ],
   },
   {
+    name: "Yuji",
+    handle: "yujiym.eth",
+    role: "Developer",
+    href: [
+      "https://x.com/yujiym",
+      "https://github.com/yujiym",
+      "https://web3.bio/yujiym.eth",
+    ],
+  },
+  {
+    name: "Yosuke",
+    handle: "y0suke.eth",
+    role: "Developer",
+    href: [
+      "https://twitter.com/yosuke_eth_dev",
+      "https://github.com/yosukemiyata",
+      "https://web3.bio/y0suke.eth",
+    ],
+  },
+  {
     name: "Yudai",
     handle: "reblock.eth",
     role: "Ecosystem",
@@ -136,32 +156,6 @@ export const contributors = [
     href: [
       "https://twitter.com/TRNT_MST",
       "https://web3.bio/torrentshinoda.eth",
-    ],
-  },
-  {
-    name: "Yosuke",
-    handle: "yosuke.eth",
-    role: "Developer",
-    href: ["https://github.com/yosukemiyata"],
-  },
-  {
-    name: "Yuji",
-    handle: "yujiym.eth",
-    role: "Developer",
-    href: [
-      "https://x.com/yujiym",
-      "https://github.com/yujiym",
-      "https://web3.bio/yujiym.eth",
-    ],
-  },
-  {
-    name: "Seiya",
-    handle: "silmin.eth",
-    role: "Designer",
-    href: [
-      "https://bsky.app/profile/silmin.net",
-      "https://github.com/silmin",
-      "https://silmin.net/",
     ],
   },
 ];

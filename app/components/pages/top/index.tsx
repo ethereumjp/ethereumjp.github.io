@@ -70,7 +70,7 @@ const TopPage = () => {
 
         <div class="max-w-3xl mx-auto">
           <h3 class="font-bold text-center text-2xl pb-5">Get Involved</h3>
-          <div class="flex items-center justify-center">
+          <div class="grid gap-6 grid-cols-2 md:grid-cols-4 items-stretch justify-center">
             {involvementLinks.map((item) => (
               <ActionLink key={item.href} href={item.href} icon={item.icon}>
                 {item.label}
