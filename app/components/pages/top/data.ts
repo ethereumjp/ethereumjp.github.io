@@ -1,25 +1,36 @@
 import type { Icon } from "@/components/ui/ActionLink";
 
-export const scheduleItems = [
+type ScheduleItem = {
+  label: string;
+  href: string;
+  date: string;
+  dateSortKey: string;
+};
+
+export const scheduleItems: ScheduleItem[] = [
   {
     label: "Agentic Economy Summit",
     href: "https://luma.com/j54ksopi",
     date: "Sep 23",
+    dateSortKey: "2026-09-23",
   },
   {
     label: "Ethereum Institutional Summit",
     href: "https://luma.com/j54ksopi",
     date: "Sep 25",
+    dateSortKey: "2026-09-25",
   },
   {
     label: "ETHGlobal Tokyo",
     href: "https://ethglobal.com/events/tokyo2026",
     date: "Sep 25-27",
+    dateSortKey: "2026-09-25",
   },
   {
     label: "Recovery Week @ Zucity Japan",
     href: "https://zucity.org/en/about/zucity/events/annual-popup-2026",
     date: "Sept 28 - Oct 5",
+    dateSortKey: "2026-09-28",
   },
 ];
 
