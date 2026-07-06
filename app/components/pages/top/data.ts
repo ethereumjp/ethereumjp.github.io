@@ -2,29 +2,24 @@ import type { Icon } from "@/components/ui/ActionLink";
 
 export const scheduleItems = [
   {
-    label: "ETHTokyo Conference",
+    label: "Agentic Economy Summit",
     href: "https://luma.com/j54ksopi",
-    date: "Sep 19",
-  },
-  {
-    label: "Decentralized AI Summit",
-    href: "https://luma.com/0xoaxqaq",
     date: "Sep 23",
   },
   {
     label: "Ethereum Institutional Summit",
-    href: "https://luma.com/154ptgo7",
+    href: "https://luma.com/j54ksopi",
     date: "Sep 25",
-  },
-  {
-    label: "Pragma Tokyo",
-    href: "https://ethglobal.com/events/pragma-tokyo2026",
-    date: "Sep 24",
   },
   {
     label: "ETHGlobal Tokyo",
     href: "https://ethglobal.com/events/tokyo2026",
     date: "Sep 25-27",
+  },
+  {
+    label: "Recovery Week @ Zucity Japan",
+    href: "https://zucity.org/en/about/zucity/events/annual-popup-2026",
+    date: "Sept 28 - Oct 5",
   },
 ];
 
