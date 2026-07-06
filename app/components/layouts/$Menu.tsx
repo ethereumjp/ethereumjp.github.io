@@ -37,6 +37,7 @@ export default function Menu() {
       label: "Submit Events",
       enabled: true,
     },
+    { href: "/visa", label: "Visa Info", enabled: true },
     { href: "/donate", label: "Funding", enabled: true },
   ];
 

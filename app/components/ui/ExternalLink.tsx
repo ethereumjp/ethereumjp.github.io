@@ -13,7 +13,7 @@ const ExternalLink = ({
 }) => (
   <a
     href={href}
-    class={`ext hover:underline decoration-dotted underline-offset-2 hover:text-secondary ${className}`}
+    class={`ext underline decoration-dotted underline-offset-2 hover:text-secondary ${className}`}
     target="_blank"
     rel={rel}
   >
