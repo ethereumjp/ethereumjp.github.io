@@ -5,8 +5,8 @@ import { getPageTitle } from "@/i18n";
 export default createRoute((c) => {
   return c.render(
     <>
-      <title>{getPageTitle("sponsorDeck", "en")}</title>
-      <SupportDeckPage locale="en" currentPath={c.req.path} />
+      <title>{getPageTitle("sponsorDeck", "ja")}</title>
+      <SupportDeckPage locale="ja" currentPath={c.req.path} />
     </>,
   );
 });

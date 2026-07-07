@@ -1,14 +1,23 @@
 import type { Child } from "hono/jsx";
 import Menu from "@/components/layouts/$Menu";
 import Footer from "@/components/layouts/Footer";
+import type { Locale } from "@/i18n";
 
-const Layout = ({ children }: { children: Child }) => {
+const Layout = ({
+  children,
+  locale,
+  currentPath,
+}: {
+  children: Child;
+  locale: Locale;
+  currentPath: string;
+}) => {
   return (
     <>
-      <Menu />
+      <Menu locale={locale} currentPath={currentPath} />
       <main>{children}</main>
       <div class="w-full pt-8 pb-9 px-6 border-t">
-        <Footer />
+        <Footer locale={locale} />
       </div>
     </>
   );

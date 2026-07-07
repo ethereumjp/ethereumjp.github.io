@@ -1,4 +1,5 @@
 import type { Icon } from "@/components/ui/ActionLink";
+import type { Locale } from "@/i18n";
 
 type ScheduleItem = {
   label: string;
@@ -97,6 +98,25 @@ export const involvementLinks = [
     icon: supportIcon,
   },
 ];
+
+export const getInvolvementLinks = (locale: Locale) =>
+  involvementLinks.map((item) => {
+    if (locale === "en") {
+      return item;
+    }
+
+    const labels: Record<string, string> = {
+      "Apply to speak": "登壇応募",
+      "Submit Events": "イベント登録",
+      "Join as Volunteer": "ボランティア参加",
+      "Support us": "支援する",
+    };
+
+    return {
+      ...item,
+      label: labels[item.label] ?? item.label,
+    };
+  });
 
 export const pastEventImages = [
   "/images/2025/conf1.jpg",
