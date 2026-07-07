@@ -1,10 +1,36 @@
 import { pastEventImages } from "@/components/pages/top/data";
+import type { Locale } from "@/i18n";
 
-const PastEvents = () => {
+const copy = {
+  en: {
+    title: "Past events",
+    speakers: "Past Speakers",
+    sessions: "Past Sessions",
+    gallery: "Gallery",
+  },
+  ja: {
+    title: "過去のイベント",
+    speakers: "過去の登壇者",
+    sessions: "過去の講演内容",
+    gallery: "ギャラリー",
+  },
+} satisfies Record<
+  Locale,
+  {
+    title: string;
+    speakers: string;
+    sessions: string;
+    gallery: string;
+  }
+>;
+
+const PastEvents = ({ locale }: { locale: Locale }) => {
+  const labels = copy[locale];
+
   return (
     <div class="py-10 overflow-hidden">
       <div class="max-w-3xl mx-auto px-4">
-        <h3 class="font-bold text-center text-2xl pb-8">Past events</h3>
+        <h3 class="font-bold text-center text-2xl pb-8">{labels.title}</h3>
       </div>
       <div class="flex overflow-hidden gap-2 md:gap-4 marquee py-4">
         <div class="flex shrink-0 justify-start gap-2 md:gap-4 min-w-max animate-marquee">
@@ -12,7 +38,7 @@ const PastEvents = () => {
             <div key={i} class="h-48 shrink-0">
               <img
                 src={src}
-                alt={`Past event ${i + 1}`}
+                alt={`event footage ${i + 1}`}
                 class="h-48 w-auto rounded-lg object-cover"
                 loading="lazy"
               />
@@ -43,7 +69,7 @@ const PastEvents = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Past Speakers &#x2197;
+          {labels.speakers} &#x2197;
         </a>
         <a
           class="btn"
@@ -51,15 +77,7 @@ const PastEvents = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Past Sessions &#x2197;
-        </a>
-        <a
-          class="btn"
-          href="https://gallery.ethtokyo.org/?t=BF7XUspX#FYTyVpD9puna7U422M2yrniRpJBpF17ByTa7Xegwy4xk"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Gallery &#x2197;
+          {labels.sessions} &#x2197;
         </a>
       </div>
     </div>

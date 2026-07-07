@@ -1,10 +1,14 @@
 import { jsxRenderer } from "hono/jsx-renderer";
 import { Link } from "honox/server";
 import Meta from "@/components/layouts/Meta";
+import { detectLocaleFromPath } from "@/i18n";
 
-export default jsxRenderer(({ children }) => {
+export default jsxRenderer(({ children }, c) => {
+  const currentPath = c.req.path;
+  const locale = detectLocaleFromPath(currentPath);
+
   return (
-    <html lang="en" class="dark">
+    <html lang={locale} class="dark">
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +23,7 @@ export default jsxRenderer(({ children }) => {
           href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans+JP:wght@400;700&display=swap"
           rel="stylesheet"
         />
-        <Meta />
+        <Meta locale={locale} currentPath={currentPath} />
         <script
           dangerouslySetInnerHTML={{
             __html: `

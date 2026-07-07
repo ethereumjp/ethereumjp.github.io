@@ -1,6 +1,8 @@
 import { useState } from "hono/jsx";
 import LogoIcon from "@/components/icons/Logo";
 import DarkModeButton from "@/components/layouts/$DarkModeButton";
+import type { Locale } from "@/i18n";
+import { localizedPath, switchLocalePath } from "@/i18n";
 
 function MenuIcon({ isOpen }: { isOpen: boolean }) {
   return (
@@ -21,32 +23,77 @@ function MenuIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-export default function Menu() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const menuCopy = {
+  en: {
+    toggleMenu: "Toggle menu",
+    switchLanguage: "ja",
+    navItems: [
+      { href: "/", label: "Home", enabled: true },
+      { href: "/manifesto", label: "Manifesto", enabled: true },
+      {
+        href: "https://speak.ethtokyo.org/conference-2026/cfp",
+        label: "Speakers Apply",
+        enabled: true,
+      },
+      {
+        href: "https://forms.ethtokyo.org/p/event-submission",
+        label: "Submit Events",
+        enabled: true,
+      },
+      { href: "/visa", label: "Visa Info", enabled: true },
+      { href: "/donate", label: "Funding", enabled: true },
+    ],
+  },
+  ja: {
+    toggleMenu: "メニューを切り替え",
+    switchLanguage: "en",
+    navItems: [
+      { href: "/", label: "Home", enabled: true },
+      { href: "/manifesto", label: "理念", enabled: true },
+      {
+        href: "https://speak.ethtokyo.org/conference-2026/cfp",
+        label: "登壇応募",
+        enabled: true,
+      },
+      {
+        href: "https://forms.ethtokyo.org/p/event-submission",
+        label: "イベント登録",
+        enabled: true,
+      },
+      // { href: "/visa", label: "ビザ情報", enabled: true }, // jp ppl don't need visas
+      { href: "/donate", label: "支援する", enabled: true },
+    ],
+  },
+} satisfies Record<
+  Locale,
+  {
+    toggleMenu: string;
+    switchLanguage: string;
+    navItems: {
+      href: string;
+      label: string;
+      enabled: boolean;
+    }[];
+  }
+>;
 
-  const navItems = [
-    { href: "/", label: "Home", enabled: true },
-    { href: "/manifesto", label: "Manifesto", enabled: true },
-    {
-      href: "https://speak.ethtokyo.org/conference-2026/cfp",
-      label: "Speakers Apply",
-      enabled: true,
-    },
-    {
-      href: "https://forms.ethtokyo.org/p/event-submission",
-      label: "Submit Events",
-      enabled: true,
-    },
-    { href: "/visa", label: "Visa Info", enabled: true },
-    { href: "/donate", label: "Funding", enabled: true },
-  ];
+export default function Menu({
+  locale,
+  currentPath,
+}: {
+  locale: Locale;
+  currentPath: string;
+}) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const copy = menuCopy[locale];
+  const targetLocale = locale === "ja" ? "en" : "ja";
 
   return (
     <header class="fixed top-0 w-full z-50 border-b style-base-menu">
       <div class="h-12 flex items-center justify-between">
         <div class="flex items-center h-full">
           <a
-            href="/"
+            href={localizedPath("/", locale)}
             class="w-12 h-full items-center justify-center border-r hidden sm:flex"
           >
             <LogoIcon klass="w-8.5 h-auto" stroke={32} />
@@ -55,7 +102,7 @@ export default function Menu() {
             type="button"
             class="sm:hidden p-1 rounded px-2"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
+            aria-label={copy.toggleMenu}
           >
             <MenuIcon isOpen={isOpen} />
           </button>
@@ -69,7 +116,7 @@ export default function Menu() {
             `}
           >
             <ul class="flex flex-col sm:flex-row sm:h-full sm:items-center">
-              {navItems.map((item) => (
+              {copy.navItems.map((item) => (
                 <li
                   key={item.label}
                   class={`
@@ -80,7 +127,7 @@ export default function Menu() {
                 >
                   {item.enabled ? (
                     <a
-                      href={item.href}
+                      href={localizedPath(item.href, locale)}
                       class="block py-3 sm:py-0 w-full h-full sm:flex sm:items-center"
                       onClick={() => setIsOpen(false)}
                       target={
@@ -109,6 +156,14 @@ export default function Menu() {
           </nav>
         </div>
         <div class="flex items-center gap-2 px-4">
+          <a
+            class="font-mono text-sm underline underline-offset-4"
+            href={switchLocalePath(currentPath, targetLocale)}
+            hreflang={targetLocale}
+            lang={targetLocale}
+          >
+            {copy.switchLanguage}
+          </a>
           <DarkModeButton />
         </div>
       </div>
