@@ -28,15 +28,17 @@ export default function Menu() {
     { href: "/", label: "Home", enabled: true },
     { href: "/manifesto", label: "Manifesto", enabled: true },
     {
-      href: "https://forms.ethtokyo.org/p/event-submission",
-      label: "Submit Event",
+      href: "https://speak.ethtokyo.org/conference-2026/cfp",
+      label: "Speakers Apply",
       enabled: true,
     },
     {
-      href: "https://speak.ethtokyo.org/conference-2026/cfp",
-      label: "Apply as speaker",
+      href: "https://forms.ethtokyo.org/p/event-submission",
+      label: "Submit Events",
       enabled: true,
     },
+    { href: "/visa", label: "Visa Info", enabled: true },
+    { href: "/donate", label: "Funding", enabled: true },
   ];
 
   return (

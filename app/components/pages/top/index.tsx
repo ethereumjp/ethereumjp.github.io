@@ -51,26 +51,22 @@ const TopPage = () => {
       </Section>
 
       <Section title="Schedule">
-        <ul class="list-disc list-outside pl-6">
+        <ul class="list-disc list-outside pl-6 mb-6">
           <li class="text-lg">ETHTokyo week&nbsp;:&nbsp;Sep 19-27, 2026</li>
-          <ul class="list-disc list-outside pl-4 mb-6">
-            {[...scheduleItems]
-              .sort(
-                (a, b) =>
-                  new Date(a.date).getTime() - new Date(b.date).getTime(),
-              )
-              .map((item) => (
-                <li key={item.href}>
-                  <ExternalLink href={item.href}>{item.label}</ExternalLink>
-                  &nbsp;:&nbsp; {item.date}
-                </li>
-              ))}
-          </ul>
+          {[...scheduleItems]
+            // Display labels can contain ranges, so sort by ISO start date.
+            .sort((a, b) => a.dateSortKey.localeCompare(b.dateSortKey))
+            .map((item) => (
+              <li key={item.href} class="ml-4">
+                <ExternalLink href={item.href}>{item.label}</ExternalLink>
+                &nbsp;:&nbsp; {item.date}
+              </li>
+            ))}
         </ul>
 
         <div class="max-w-3xl mx-auto">
           <h3 class="font-bold text-center text-2xl pb-5">Get Involved</h3>
-          <div class="flex items-center justify-center">
+          <div class="grid gap-6 grid-cols-2 md:grid-cols-4 items-stretch justify-center">
             {involvementLinks.map((item) => (
               <ActionLink key={item.href} href={item.href} icon={item.icon}>
                 {item.label}

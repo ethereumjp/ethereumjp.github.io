@@ -18,7 +18,11 @@ const ExternalLink = ({
     rel={rel}
   >
     <span>{children}</span>
-    <span style={{ fontSize: "0.8em", verticalAlign: "super" }}>↗︎</span>
+    <span
+      style={{ color: "#ff5544", fontSize: "0.8em", verticalAlign: "super" }}
+    >
+      ↗︎
+    </span>
   </a>
 );
 
