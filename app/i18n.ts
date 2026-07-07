@@ -95,6 +95,10 @@ const pageTitles = {
     en: "Privacy Policy | ETHTokyo '26",
     ja: "プライバシーポリシー | ETHTokyo '26",
   },
+  termsOfService: {
+    en: "Terms of Service | ETHTokyo '26",
+    ja: "利用規約 | ETHTokyo '26",
+  },
 } satisfies Record<string, Record<Locale, string>>;
 
 export type PageKey = keyof typeof pageTitles;
