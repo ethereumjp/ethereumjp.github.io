@@ -11,3 +11,10 @@ export const GITHUB_DESIGN_ASSETS_URL =
 export const TELEGRAM_GROUP_LINK = "https://t.me/ethtokyo";
 
 export const TWITTER_ID = "Ethereum_JP";
+
+export const BANKING_INFO = {
+  bank: "GMOあおぞら銀行",
+  branch: "法人第二営業部 (102)",
+  account_no: "普通 2097983",
+  account_name: "ｼﾔ)ｲ-ｻﾘｱﾑｼﾞﾔﾊﾟﾝｲ-ｻﾄｳｷﾖｳ",
+};

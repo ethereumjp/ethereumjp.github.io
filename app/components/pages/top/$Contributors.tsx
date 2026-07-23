@@ -116,7 +116,8 @@ const Contributors = () => (
           <div class="ml-auto flex gap-2">
             {contributor.href.map((m) => (
               <a
-                className="text-sm"
+                key={m}
+                class="text-sm"
                 target="_blank"
                 href={m}
                 rel="noopener noreferrer"

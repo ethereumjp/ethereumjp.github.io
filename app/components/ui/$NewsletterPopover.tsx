@@ -1,7 +1,40 @@
 import { useState } from "hono/jsx";
 import SimpleIcon from "@/components/ui/SimpleIcon";
+import type { Locale } from "@/i18n";
 
 const target = "newsletter";
+
+const newsletterCopy = {
+  en: {
+    title: "Newsletter",
+    description: "Stay updated with the latest news and announcements",
+    sending: "Sending...",
+    subscribed: "Subscribed",
+    failed: "Failed.",
+    subscribe: "Subscribe",
+    close: "Close newsletter signup",
+  },
+  ja: {
+    title: "Newsletter",
+    description: "最新ニュースとお知らせを受け取る",
+    sending: "送信中...",
+    subscribed: "登録済み",
+    failed: "失敗しました",
+    subscribe: "登録",
+    close: "ニュースレター登録を閉じる",
+  },
+} satisfies Record<
+  Locale,
+  {
+    title: string;
+    description: string;
+    sending: string;
+    subscribed: string;
+    failed: string;
+    subscribe: string;
+    close: string;
+  }
+>;
 
 const validateEmailAddress = (email: string) => {
   const re =
@@ -9,8 +42,9 @@ const validateEmailAddress = (email: string) => {
   return re.test(email);
 };
 
-const NewsletterDialog = () => {
+const NewsletterDialog = ({ locale }: { locale: Locale }) => {
   const [sendStatus, setSendStatus] = useState(0);
+  const copy = newsletterCopy[locale];
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -66,13 +100,13 @@ const NewsletterDialog = () => {
   const getNewsletterButtonLabel = () => {
     switch (sendStatus) {
       case 1:
-        return "Sending...";
+        return copy.sending;
       case 2:
-        return "Subscribed";
+        return copy.subscribed;
       case 3:
-        return "Failed.";
+        return copy.failed;
       default:
-        return "Subscribe";
+        return copy.subscribe;
     }
   };
 
@@ -85,7 +119,7 @@ const NewsletterDialog = () => {
         class="hover:text-secondary"
       >
         <SimpleIcon
-          klass="w-4 h-4"
+          klass="w-5 h-5"
           src="https://cdn.simpleicons.org/substack"
           alt="substack"
         />
@@ -96,10 +130,8 @@ const NewsletterDialog = () => {
         class="fixed bg-transparent bottom-18 left-6 top-auto z-50"
       >
         <div class="w-screen-sm block mx-auto rounded-lg py-8 px-6 border style-base shadow-lg">
-          <h5 class="font-bold font-mono mb-2">Newsletter</h5>
-          <p class="text-sm font-normal mb-4">
-            Stay updated with the latest news and announcements
-          </p>
+          <h5 class="font-bold font-mono mb-2">{copy.title}</h5>
+          <p class="text-sm font-normal mb-4">{copy.description}</p>
           <form onSubmit={handleSubmit} class="grid grid-cols-3 gap-4">
             <input
               name="email"
@@ -116,6 +148,7 @@ const NewsletterDialog = () => {
             popovertarget={target}
             popovertargetAction="hidden"
             type="button"
+            aria-label={copy.close}
           >
             x
           </button>
