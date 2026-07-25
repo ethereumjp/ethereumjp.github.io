@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { cp } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import ssg from "@hono/vite-ssg";
 import tailwindcss from "@tailwindcss/vite";
@@ -29,17 +29,30 @@ const buildTimeEnvDefine = (
     ]),
   );
 
-const copyCuratedImagesPlugin = (): Plugin => ({
-  name: "copy-curated-images",
-  closeBundle: async () => {
-    const source = join(process.cwd(), "public/images/curated");
-    const destination = join(process.cwd(), "dist/images/curated");
+const emitEventThumbnailsPlugin = (): Plugin => ({
+  name: "emit-event-thumbnails",
+  generateBundle: {
+    order: "post",
+    handler: async function () {
+      const source = join(process.cwd(), "public/images/2026/eventthumbnails");
 
-    if (!existsSync(source)) {
-      return;
-    }
+      if (!existsSync(source)) {
+        return;
+      }
 
-    await cp(source, destination, { recursive: true });
+      const files = await readdir(source, { withFileTypes: true });
+      await Promise.all(
+        files
+          .filter((file) => file.isFile())
+          .map(async (file) => {
+            this.emitFile({
+              type: "asset",
+              fileName: `images/2026/eventthumbnails/${file.name}`,
+              source: await readFile(join(source, file.name)),
+            });
+          }),
+      );
+    },
   },
 });
 
@@ -71,7 +84,7 @@ export default defineConfig(({ mode }) => {
       ...basePlugins,
       honox(),
       ssg({ entry }),
-      copyCuratedImagesPlugin(),
+      emitEventThumbnailsPlugin(),
     ],
   };
 });

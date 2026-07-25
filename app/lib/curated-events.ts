@@ -157,7 +157,7 @@ export const formatEventDate = (
   return `${startMonth} ${startDay} - ${endMonth} ${endDay}`;
 };
 
-export const fetchCuratedEvents = async (): Promise<CuratedEvent[]> => {
+const loadCuratedEvents = async (): Promise<CuratedEvent[]> => {
   const pat = process.env.AIRTABLE_EVENTCURATE_PAT;
   const base = process.env.AIRTABLE_EVENTCURATE_BASE;
   const table = process.env.AIRTABLE_EVENTCURATE_TABLE;
@@ -182,6 +182,7 @@ export const fetchCuratedEvents = async (): Promise<CuratedEvent[]> => {
 
     const response = await fetch(url, {
       headers: { Authorization: `Bearer ${pat}` },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!response.ok) {
@@ -200,7 +201,16 @@ export const fetchCuratedEvents = async (): Promise<CuratedEvent[]> => {
     .filter((event): event is CuratedEvent => event !== null)
     .sort((a, b) => a.startDate.localeCompare(b.startDate));
 
-  const formbricksThumbnails = await fetchFormbricksThumbnailMap();
+  let formbricksThumbnails = new Map<string, string>();
+  try {
+    formbricksThumbnails = await fetchFormbricksThumbnailMap();
+  } catch (error) {
+    console.warn(
+      `[curated-events] Could not fetch Formbricks thumbnails; continuing without them: ${
+        error instanceof Error ? error.message : "unknown error"
+      }`,
+    );
+  }
 
   return Promise.all(
     events.map(async (event) => ({
@@ -208,4 +218,19 @@ export const fetchCuratedEvents = async (): Promise<CuratedEvent[]> => {
       thumbnail: await resolveEventThumbnail(event, formbricksThumbnails),
     })),
   );
+};
+
+let curatedEventsPromise: Promise<CuratedEvent[]> | undefined;
+
+export const fetchCuratedEvents = (): Promise<CuratedEvent[]> => {
+  curatedEventsPromise ??= loadCuratedEvents().catch((error) => {
+    console.warn(
+      `[curated-events] Could not fetch Airtable events; using the fallback schedule: ${
+        error instanceof Error ? error.message : "unknown error"
+      }`,
+    );
+    return [];
+  });
+
+  return curatedEventsPromise;
 };

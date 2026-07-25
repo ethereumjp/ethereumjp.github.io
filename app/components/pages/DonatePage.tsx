@@ -252,22 +252,20 @@ const DonatePage = ({
             <div>
               <p class="font-mono text-sm opacity-70">{labels.sendTo}</p>
               <h2 class="font-mono text-2xl font-bold">
-                <ExternalLink href="http://etherscan.io/address/ethjp.eth">
+                <ExternalLink href="https://etherscan.io/address/ethjp.eth">
                   ethjp.eth
                 </ExternalLink>
               </h2>
               <br />
               <p class="font-mono text-xs opacity-70">{labels.cryptoNote}</p>
             </div>
-            <button type="button">
-              <a
-                href="#donate"
-                class="flex h-full w-full py-1 px-2 items-center justify-center border font-mono text-sm bg-white text-dark hover:bg-dark hover:text-white dark:bg-dark dark:text-light dark:hover:bg-light dark:hover:text-dark"
-                aria-label={labels.closePayment}
-              >
-                {labels.close}
-              </a>
-            </button>
+            <a
+              href="#donate"
+              class="flex py-1 px-2 items-center justify-center border font-mono text-sm bg-white text-dark hover:bg-dark hover:text-white dark:bg-dark dark:text-light dark:hover:bg-light dark:hover:text-dark"
+              aria-label={labels.closePayment}
+            >
+              {labels.close}
+            </a>
           </div>
           <div class="mt-5 rounded-lg border bg-white p-4">
             <img
@@ -306,15 +304,13 @@ const DonatePage = ({
                 {labels.bankTransfer}
               </h2>
             </div>
-            <button type="button">
-              <a
-                href="#donate"
-                class="flex h-full w-full py-1 px-2 items-center justify-center border font-mono text-sm bg-white text-dark hover:bg-dark hover:text-white dark:bg-dark dark:text-light dark:hover:bg-light dark:hover:text-dark"
-                aria-label={labels.closeBanking}
-              >
-                {labels.close}
-              </a>
-            </button>
+            <a
+              href="#donate"
+              class="flex py-1 px-2 items-center justify-center border font-mono text-sm bg-white text-dark hover:bg-dark hover:text-white dark:bg-dark dark:text-light dark:hover:bg-light dark:hover:text-dark"
+              aria-label={labels.closeBanking}
+            >
+              {labels.close}
+            </a>
           </div>
           <dl class="mt-6 divide-y border-y font-mono text-sm">
             <div class="grid grid-cols-[7rem_1fr] gap-4 py-3">

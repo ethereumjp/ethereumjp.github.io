@@ -42,7 +42,7 @@ const extensionFromContentType = (contentType: string): string => {
 };
 
 export const buildThumbnailFilename = (
-  { name }: ThumbnailFileInfo,
+  { name, startDate }: ThumbnailFileInfo,
   extension: string,
 ): string => {
   const slug = name
@@ -51,8 +51,9 @@ export const buildThumbnailFilename = (
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+  const date = startDate.replace(/[^0-9]+/g, "-").replace(/^-|-$/g, "");
 
-  return `${slug}.${extension}`;
+  return `${date}-${slug || "event"}.${extension}`;
 };
 
 const extractThumbnailUrl = (
@@ -87,6 +88,7 @@ export const fetchFormbricksThumbnailMap = async (): Promise<
 
   const response = await fetch(url, {
     headers: { "x-api-key": apiKey },
+    signal: AbortSignal.timeout(10000),
   });
 
   if (!response.ok) {

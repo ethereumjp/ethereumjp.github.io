@@ -1,6 +1,7 @@
 import Logo from "@/components/icons/LogoGradient";
 import Layout from "@/components/layouts/MainLayout";
 import Contributors from "@/components/pages/top/$Contributors";
+import CuratedEvents from "@/components/pages/top/CuratedEvents";
 import {
   getInvolvementLinks,
   scheduleItems,
@@ -12,6 +13,7 @@ import ActionLink from "@/components/ui/ActionLink";
 import ExternalLink from "@/components/ui/ExternalLink";
 import type { Locale } from "@/i18n";
 import { localizedPath } from "@/i18n";
+import type { CuratedEvent } from "@/lib/curated-events";
 
 const copy = {
   en: {
@@ -97,9 +99,11 @@ const scheduleDateByLocale: Record<Locale, Record<string, string>> = {
 const TopPage = ({
   locale,
   currentPath,
+  events,
 }: {
   locale: Locale;
   currentPath: string;
+  events: CuratedEvent[];
 }) => {
   const labels = copy[locale];
   const involvementLinks = getInvolvementLinks(locale);
@@ -133,37 +137,39 @@ const TopPage = ({
       </Section>
 
       <Section title={labels.scheduleTitle}>
-        <ul class="list-disc list-outside pl-6 mb-6">
-          <li
-            class="text-lg"
+        <div id="schedule">
+          <p
+            class="text-lg mb-6 text-center"
             dangerouslySetInnerHTML={{ __html: labels.weekSchedule as string }}
           />
-          {[...scheduleItems]
-            // Display labels can contain ranges, so sort by ISO start date.
-            .sort((a, b) => a.dateSortKey.localeCompare(b.dateSortKey))
-            .map((item) => (
-              <li key={item.href} class="ml-4">
-                <ExternalLink href={item.href}>{item.label}</ExternalLink>
-                &nbsp;:&nbsp;{" "}
-                {scheduleDateByLocale[locale][item.dateSortKey] ?? item.date}
-              </li>
-            ))}
-        </ul>
 
-        <div class="max-w-3xl mx-auto">
-          <h3 class="font-bold text-center text-2xl pb-5">
-            {labels.getInvolved}
-          </h3>
-          <div class="grid gap-6 grid-cols-2 md:grid-cols-4 items-stretch justify-center">
-            {involvementLinks.map((item) => (
-              <ActionLink
-                key={item.href}
-                href={localizedPath(item.href, locale)}
-                icon={item.icon}
-              >
-                {item.label}
-              </ActionLink>
-            ))}
+          {events.length > 0 ? (
+            <CuratedEvents events={events} />
+          ) : (
+            <ScheduleFallback
+              items={scheduleItems.map((item) => ({
+                ...item,
+                date:
+                  scheduleDateByLocale[locale][item.dateSortKey] ?? item.date,
+              }))}
+            />
+          )}
+
+          <div class="max-w-3xl mx-auto mt-8">
+            <h3 class="font-bold text-center text-2xl pb-5">
+              {labels.getInvolved}
+            </h3>
+            <div class="grid gap-6 grid-cols-2 md:grid-cols-4 items-stretch justify-center">
+              {involvementLinks.map((item) => (
+                <ActionLink
+                  key={item.href}
+                  href={localizedPath(item.href, locale)}
+                  icon={item.icon}
+                >
+                  {item.label}
+                </ActionLink>
+              ))}
+            </div>
           </div>
         </div>
       </Section>

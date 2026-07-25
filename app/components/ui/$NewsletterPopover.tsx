@@ -36,12 +36,6 @@ const newsletterCopy = {
   }
 >;
 
-const validateEmailAddress = (email: string) => {
-  const re =
-    /^([a-zA-Z0-9_-]+(?:.[a-zA-Z0-9_-]+)*)@((?:[a-zA-Z0-9_-]+.)*[a-zA-Z0-9_][a-zA-Z0-9_-]{0,66})[.]([a-z]{2,6}(?:.[a-z]{2})?)$/;
-  return re.test(email);
-};
-
 const NewsletterDialog = ({ locale }: { locale: Locale }) => {
   const [sendStatus, setSendStatus] = useState(0);
   const copy = newsletterCopy[locale];
@@ -51,12 +45,13 @@ const NewsletterDialog = ({ locale }: { locale: Locale }) => {
     setSendStatus(1);
 
     const form = e.currentTarget as HTMLFormElement;
-    const email = (form.elements.namedItem("email") as HTMLInputElement)
-      .value as string;
+    const emailInput = form.elements.namedItem("email") as HTMLInputElement;
+    const email = emailInput.value.trim();
 
-    if (!validateEmailAddress(email)) {
+    if (!emailInput.checkValidity()) {
       setSendStatus(3);
-      throw new Error("Invalid email address.");
+      emailInput.reportValidity();
+      return;
     }
 
     try {
@@ -138,15 +133,21 @@ const NewsletterDialog = ({ locale }: { locale: Locale }) => {
               type="email"
               class="col-span-2"
               placeholder="your@email"
+              autocomplete="email"
+              required
             />
-            <button class="col-span-1 btn flex-1" type="submit">
+            <button
+              class="col-span-1 btn flex-1"
+              type="submit"
+              disabled={sendStatus === 1 || sendStatus === 2}
+            >
               {getNewsletterButtonLabel()}
             </button>
           </form>
           <button
             class="absolute top-2 right-2 cursor-pointer w-6 h-6"
             popovertarget={target}
-            popovertargetAction="hidden"
+            popovertargetAction="hide"
             type="button"
             aria-label={copy.close}
           >

@@ -2,30 +2,31 @@ import { useEffect, useState } from "hono/jsx";
 import MoonIcon from "@/components/icons/Moon";
 import SunIcon from "@/components/icons/Sun";
 
-const target = "theme";
-
 type Theme = "dark" | "light";
 
 const DarkModeToggle = () => {
   const [darkMode, setDarkMode] = useState<Theme>("dark");
 
   useEffect(() => {
-    setDarkMode((localStorage.getItem("ethtokyo.theme") as Theme) ?? "dark");
+    setDarkMode(
+      document.documentElement.classList.contains("dark") ? "dark" : "light",
+    );
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode === "dark");
-    localStorage.setItem("ethtokyo.theme", darkMode);
-  }, [darkMode]);
+  const toggleTheme = () => {
+    const nextTheme = darkMode === "dark" ? "light" : "dark";
+    document.documentElement.classList.toggle("dark", nextTheme === "dark");
+    localStorage.setItem("ethtokyo.theme", nextTheme);
+    setDarkMode(nextTheme);
+  };
 
   return (
     <div className="text-xl">
       <button
         type="button"
-        popovertarget={target}
-        popovertargetAction="show"
         class="anchor-theme rounded-full p-1 style-base w-7 h-7 flex items-center justify-center z-50 border"
-        onClick={() => setDarkMode(darkMode === "dark" ? "light" : "dark")}
+        onClick={toggleTheme}
+        aria-label={`Switch to ${darkMode === "dark" ? "light" : "dark"} mode`}
       >
         {darkMode === "dark" ? <SunIcon /> : <MoonIcon />}
       </button>
