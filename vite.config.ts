@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import ssg from "@hono/vite-ssg";
 import tailwindcss from "@tailwindcss/vite";
@@ -10,6 +11,12 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 const entry = "./app/server.ts";
 const basePlugins = [tailwindcss(), tsconfigPaths()];
+// The SSG plugin runs an internal Vite server. Writing generated files under
+// public/ can restart that server while it is closing and leave the build alive.
+const eventThumbnailStagingDir = join(
+  tmpdir(),
+  `ethtokyo-eventthumbnails-${process.pid}`,
+);
 
 const buildTimeEnvKeys = [
   "AIRTABLE_EVENTCURATE_PAT",
@@ -31,16 +38,20 @@ const buildTimeEnvDefine = (
 
 const emitEventThumbnailsPlugin = (): Plugin => ({
   name: "emit-event-thumbnails",
+  apply: "build",
+  async buildStart() {
+    await rm(eventThumbnailStagingDir, { recursive: true, force: true });
+  },
   generateBundle: {
     order: "post",
     handler: async function () {
-      const source = join(process.cwd(), "public/images/2026/eventthumbnails");
-
-      if (!existsSync(source)) {
+      if (!existsSync(eventThumbnailStagingDir)) {
         return;
       }
 
-      const files = await readdir(source, { withFileTypes: true });
+      const files = await readdir(eventThumbnailStagingDir, {
+        withFileTypes: true,
+      });
       await Promise.all(
         files
           .filter((file) => file.isFile())
@@ -48,11 +59,14 @@ const emitEventThumbnailsPlugin = (): Plugin => ({
             this.emitFile({
               type: "asset",
               fileName: `images/2026/eventthumbnails/${file.name}`,
-              source: await readFile(join(source, file.name)),
+              source: await readFile(join(eventThumbnailStagingDir, file.name)),
             });
           }),
       );
     },
+  },
+  async closeBundle() {
+    await rm(eventThumbnailStagingDir, { recursive: true, force: true });
   },
 });
 
@@ -76,7 +90,13 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
-    define: buildTimeEnvDefine(env),
+    define: {
+      ...buildTimeEnvDefine(env),
+      "process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR":
+        mode === "production"
+          ? JSON.stringify(eventThumbnailStagingDir)
+          : "undefined",
+    },
     build: {
       emptyOutDir: false,
     },

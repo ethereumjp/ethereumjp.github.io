@@ -2,10 +2,11 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const FORMBRICKS_HOST = "https://formbricks.ethtokyo.org";
-const THUMBNAIL_OUTPUT_DIR = join(
-  process.cwd(),
-  "public/images/2026/eventthumbnails",
-);
+// Production SSG overrides this with a directory outside Vite's watched root.
+// Development keeps using public/ so newly fetched images remain directly servable.
+const THUMBNAIL_OUTPUT_DIR =
+  process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR ??
+  join(process.cwd(), "public/images/2026/eventthumbnails");
 
 type FormbricksResponse = {
   id: string;
