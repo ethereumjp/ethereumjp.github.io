@@ -42,10 +42,12 @@ jobs:
           VITE_AIRTABLE_NEWSLETTER_PAT: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_PAT }}
           VITE_AIRTABLE_NEWSLETTER_BASE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_BASE }}
           VITE_AIRTABLE_NEWSLETTER_TABLE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_TABLE }}
-          # Reserved for upcoming server-side event-curation feature (not yet referenced in code)
+          # Build-time only (not inlined into the client bundle)
           AIRTABLE_EVENTCURATE_PAT: ${{ secrets.AIRTABLE_EVENTCURATE_PAT }}
           AIRTABLE_EVENTCURATE_BASE: ${{ secrets.AIRTABLE_EVENTCURATE_BASE }}
           AIRTABLE_EVENTCURATE_TABLE: ${{ secrets.AIRTABLE_EVENTCURATE_TABLE }}
+          FORMBRICKS_EVENT_PAT: ${{ secrets.FORMBRICKS_EVENT_PAT }}
+          FORMBRICKS_EVENT_SURVEY_ID: ${{ secrets.FORMBRICKS_EVENT_SURVEY_ID }}
 
       # upload
       - name: Upload pages artifact

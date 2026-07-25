@@ -24,6 +24,7 @@
 
 # cache
 **/public/cache
+**/public/images/2026/eventthumbnails/*
 
 # debug
 **/build-storybook.log*

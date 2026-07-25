@@ -1,3 +1,4 @@
+import { html } from "hono/html";
 import { SITE_DOMAIN, SITE_URL } from "@/const";
 import type { Locale } from "@/i18n";
 import {
@@ -24,9 +25,13 @@ const Meta = ({
     <>
       <meta name="description" content={meta.siteDescription} />
       <link rel="canonical" href={currentUrl} />
-      <link rel="alternate" hreflang="en" href={canonicalUrl(enPath)} />
-      <link rel="alternate" hreflang="ja" href={canonicalUrl(jaPath)} />
-      <link rel="alternate" hreflang="x-default" href={SITE_URL} />
+      {/*
+        Hono deduplicates <link> elements by href, but language alternates
+        intentionally share URLs with the canonical and x-default links.
+      */}
+      {html`<link rel="alternate" hreflang="en" href="${canonicalUrl(enPath)}" />
+        <link rel="alternate" hreflang="ja" href="${canonicalUrl(jaPath)}" />
+        <link rel="alternate" hreflang="x-default" href="${SITE_URL}" />`}
       <meta
         property="og:locale"
         content={locale === "ja" ? "ja_JP" : "en_US"}

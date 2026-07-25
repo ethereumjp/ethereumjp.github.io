@@ -62,7 +62,7 @@ const PastEvents = ({ locale }: { locale: Locale }) => {
           ))}
         </div>
       </div>
-      <div class="flex pt-4 gap-6 justify-center items-center">
+      <div class="flex flex-col md:flex-row pt-4 gap-4 md:gap-6 justify-center items-center">
         <a
           class="btn"
           href="https://speak.ethtokyo.org/conference-2025/speaker/"
