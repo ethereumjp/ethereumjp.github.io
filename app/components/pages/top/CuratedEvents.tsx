@@ -24,7 +24,7 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
         return (
           <article
             key={event.id}
-            class="w-full max-w-60 overflow-hidden rounded-lg border transition-colors hover:border-secondary"
+            class="w-full max-w-60 mx-auto overflow-hidden rounded-lg border transition-colors hover:border-secondary"
           >
             <a
               href={`#${modalId}`}
@@ -67,9 +67,9 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
               >
                 <span class="sr-only">Close details for {event.name}</span>
               </a>
-              <div class="relative max-h-full w-full max-w-2xl overflow-y-auto rounded-lg border bg-light p-6 text-dark shadow-2xl dark:bg-dark dark:text-light">
-                <div class="flex items-start justify-between gap-4">
-                  <div class="space-y-2">
+              <div class="relative max-h-full w-full max-w-2xl overflow-y-auto rounded-lg border bg-light p-6 text-center text-dark shadow-2xl dark:bg-dark dark:text-light md:text-left">
+                <div class="flex flex-col items-center gap-4 md:flex-row md:items-start md:justify-between">
+                  <div class="flex flex-col items-center space-y-2 md:items-start">
                     <p class="font-mono text-sm opacity-70">Event</p>
                     <h4 id={dialogTitleId} class="font-mono text-2xl font-bold">
                       {event.name}
@@ -151,7 +151,7 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
                   ) : null}
                 </dl>
                 {event.link || event.groupChatLink ? (
-                  <div class="mt-6 flex flex-wrap gap-3">
+                  <div class="mt-6 flex flex-wrap justify-center gap-3 md:justify-start">
                     {event.link ? (
                       <ExternalLink className="btn-outline" href={event.link}>
                         Event website
