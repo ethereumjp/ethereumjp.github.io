@@ -157,6 +157,10 @@ export const formatEventDate = (
   return `${startMonth} ${startDay} - ${endMonth} ${endDay}`;
 };
 
+const compareEventsByStart = (a: CuratedEvent, b: CuratedEvent): number =>
+  a.startDate.localeCompare(b.startDate) ||
+  (a.startTime ?? "").localeCompare(b.startTime ?? "");
+
 const loadCuratedEvents = async (): Promise<CuratedEvent[]> => {
   const pat = process.env.AIRTABLE_EVENTCURATE_PAT;
   const base = process.env.AIRTABLE_EVENTCURATE_BASE;
@@ -199,7 +203,7 @@ const loadCuratedEvents = async (): Promise<CuratedEvent[]> => {
   const events = records
     .map(mapRecord)
     .filter((event): event is CuratedEvent => event !== null)
-    .sort((a, b) => a.startDate.localeCompare(b.startDate));
+    .sort(compareEventsByStart);
 
   let formbricksThumbnails = new Map<string, string>();
   try {

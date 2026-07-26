@@ -50,60 +50,72 @@ const Footer = ({ locale }: { locale: Locale }) => {
   const copy = footerCopy[locale];
 
   return (
-    <div class="max-w-3xl mx-auto flex flex-col gap-8">
-      <ul class="inline-flex gap-4 text-xs [>a]:font-mono justify-between">
-        <ul class="space-y-2">
-          <h3 class="text-base">About Us</h3>
-          <li>
-            <a
-              href="https://ethereum-japan.org/about"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {copy.aboutus.ethereumjapan}
-            </a>
-          </li>
-        </ul>
-        <ul class="space-y-2">
-          <h3 class="text-base">Press</h3>
-          <li>
-            <a
-              href="https://github.com/ethereumjp/ethereumjp.github.io/tree/main/public/assets"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {copy.press.brandassets}
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://gallery.ethtokyo.org/?t=BF7XUspX#FYTyVpD9puna7U422M2yrniRpJBpF17ByTa7Xegwy4xk"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {copy.press.gallery}
-            </a>
-          </li>
-        </ul>
-        <ul class="space-y-2">
-          <h3 class="text-base">Legal & Trust</h3>
-          <li>
-            <a href={localizedPath("/code-of-conduct", locale)}>
-              {copy.codeOfConduct}
-            </a>
-          </li>
-          <li>
-            <a href={localizedPath("/terms-of-service", locale)}>
-              {copy.termsOfService}
-            </a>
-          </li>
-          <li>
-            <a href={localizedPath("/privacy-policy", locale)}>
-              {copy.privacyPolicy}
-            </a>
-          </li>
-        </ul>
-      </ul>
+    <footer class="max-w-3xl mx-auto flex flex-col gap-8">
+      <div class="grid grid-cols-3 gap-4 text-xs">
+        <section aria-labelledby="footer-about">
+          <h2 id="footer-about" class="mb-2 text-base">
+            About Us
+          </h2>
+          <ul class="space-y-2">
+            <li>
+              <a
+                href="https://ethereum-japan.org/about"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {copy.aboutus.ethereumjapan}
+              </a>
+            </li>
+          </ul>
+        </section>
+        <section aria-labelledby="footer-press">
+          <h2 id="footer-press" class="mb-2 text-base">
+            Press
+          </h2>
+          <ul class="space-y-2">
+            <li>
+              <a
+                href="https://github.com/ethereumjp/ethereumjp.github.io/tree/main/public/assets"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {copy.press.brandassets}
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://gallery.ethtokyo.org/?t=BF7XUspX#FYTyVpD9puna7U422M2yrniRpJBpF17ByTa7Xegwy4xk"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {copy.press.gallery}
+              </a>
+            </li>
+          </ul>
+        </section>
+        <section aria-labelledby="footer-legal">
+          <h2 id="footer-legal" class="mb-2 text-base">
+            Legal & Trust
+          </h2>
+          <ul class="space-y-2">
+            <li>
+              <a href={localizedPath("/code-of-conduct", locale)}>
+                {copy.codeOfConduct}
+              </a>
+            </li>
+            <li>
+              <a href={localizedPath("/terms-of-service", locale)}>
+                {copy.termsOfService}
+              </a>
+            </li>
+            <li>
+              <a href={localizedPath("/privacy-policy", locale)}>
+                {copy.privacyPolicy}
+              </a>
+            </li>
+          </ul>
+        </section>
+      </div>
 
       <div class="flex justify-between w-full">
         <ul class="inline-flex gap-4 font-bold">
@@ -152,7 +164,7 @@ const Footer = ({ locale }: { locale: Locale }) => {
       </div>
 
       {/* <p class="text-sm">&copy;2025 ETHTokyo.</p> */}
-    </div>
+    </footer>
   );
 };
 
