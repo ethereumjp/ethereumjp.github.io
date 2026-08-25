@@ -169,8 +169,50 @@ const formatEventTime = (
   return startTime ?? endTime ?? null;
 };
 
+const EventTypeControls = ({ events }: { events: CuratedEvent[] }) => {
+  const eventTypes = Array.from(
+    new Set(
+      events
+        .map((event) => event.type?.trim())
+        .filter((type): type is string => Boolean(type)),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
+
+  if (eventTypes.length === 0) {
+    return null;
+  }
+
+  return (
+    <fieldset class="mb-6 flex flex-wrap justify-center gap-2">
+      <legend class="sr-only">Filter events by type</legend>
+      <button
+        type="button"
+        class="rounded-full border bg-dark px-3 py-1 text-sm text-light transition-colors hover:border-secondary dark:bg-light dark:text-dark"
+        aria-pressed="true"
+        data-event-filter-option
+        data-event-type=""
+      >
+        All
+      </button>
+      {eventTypes.map((type) => (
+        <button
+          key={type}
+          type="button"
+          class="rounded-full border px-3 py-1 text-sm transition-colors hover:border-secondary"
+          aria-pressed="false"
+          data-event-filter-option
+          data-event-type={type}
+        >
+          {type}
+        </button>
+      ))}
+    </fieldset>
+  );
+};
+
 const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
-  <>
+  <div data-event-filter>
+    <EventTypeControls events={events} />
     <div class="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] justify-center gap-4">
       {events.map((event) => {
         const modalId = `event-${event.id}`;
@@ -181,6 +223,8 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
           <article
             key={event.id}
             class="w-full max-w-60 mx-auto overflow-hidden rounded-lg border transition-colors hover:border-secondary"
+            data-event-card
+            data-event-type={event.type?.trim() ?? ""}
           >
             <a
               href={`#${modalId}`}
@@ -329,7 +373,7 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
         );
       })}
     </div>
-  </>
+  </div>
 );
 
 export default CuratedEvents;
