@@ -17,8 +17,8 @@ import type { CuratedEvent } from "@/lib/curated-events";
 
 const copy = {
   en: {
-    date: "🗓️ September 19-27, 2026",
-    location: "📍 Tokyo, Japan",
+    date: "🗓️ Core week: September 19-27",
+    location: "📍 Japan",
     whatTitle: "What is ETHTokyo?",
     whatParagraphs: [
       "ETHTokyo is a Tokyo-based Ethereum community and coordination layer, bringing together builders, researchers, artists, founders, institutions, public-goods contributors, and independent communities around a shared cypherpunk ethos and optimism for the future.",
@@ -28,7 +28,7 @@ const copy = {
       "ETHTokyo Week 2026 will take place from September 19 to 27, featuring community-led events, conferences, workshops, meetups, dinners, hackathons, and other Ethereum-adjacent gatherings across Tokyo.",
     readMore: "Read more",
     scheduleTitle: "Schedule",
-    weekSchedule: "ETHTokyo week&nbsp;:&nbsp;Sep 19-27, 2026",
+    weekSchedule: "Core week: Sep 19-27",
     getInvolved: "Get Involved",
     accessTitle: "Access",
     travelTitle: "✈️ Traveling to Tokyo",
@@ -49,8 +49,8 @@ const copy = {
     teamTitle: "Our Team",
   },
   ja: {
-    date: "🗓️ 9/19-27 2026",
-    location: "📍 東京",
+    date: "🗓️ コアウィーク: 9/19-27",
+    location: "📍 日本",
     whatTitle: "ETHTokyoとは",
     whatParagraphs: [
       "ETHTokyoは、分散型エコシステムを推進するための祭典です。",
@@ -61,7 +61,7 @@ const copy = {
       "ETHTokyo Week 2026は9月19日から27日まで開催されます。東京各地で、コミュニティ主導の各種イベント、カンファレンス、ハッカソン、ワークショップ、交流会、食事会等が行われます。",
     readMore: "詳しく読む",
     scheduleTitle: "スケジュール",
-    weekSchedule: "ETHTokyo Week&nbsp;:&nbsp;2026年9月19日-27日",
+    weekSchedule: "コアウィーク: 9月19日-27日",
     getInvolved: "参加する",
     accessTitle: "アクセス",
     travelTitle: "✈️ 東京への渡航",
@@ -113,7 +113,7 @@ const TopPage = ({
       <section class="w-full pt-20 pb-8 px-6 border-b">
         <div class="max-w-3xl mx-auto flex flex-col gap-4">
           <Logo klass="max-w-80 h-auto mx-auto pl-4" stroke={12} />
-          <h1 class="text-4xl mt-14 font-mono font-bold">ETHTokyo week 2026</h1>
+          <h1 class="text-4xl mt-14 font-mono font-bold">ETHTokyo 2026</h1>
           <p class="text-2xl">
             {labels.date}
             <br />
@@ -138,10 +138,7 @@ const TopPage = ({
 
       <Section title={labels.scheduleTitle}>
         <div id="schedule">
-          <p
-            class="text-lg mb-6 text-center"
-            dangerouslySetInnerHTML={{ __html: labels.weekSchedule as string }}
-          />
+          <p class="text-lg mb-6 text-center">{labels.weekSchedule}</p>
 
           {events.length > 0 ? (
             <CuratedEvents events={events} />
