@@ -1,6 +1,162 @@
+import type { Child } from "hono/jsx";
 import EventThumbnail from "@/components/pages/top/EventThumbnail";
 import ExternalLink from "@/components/ui/ExternalLink";
 import { type CuratedEvent, formatEventDate } from "@/lib/curated-events";
+
+const isSafeMarkdownLink = (href: string): boolean => {
+  if (href.startsWith("#") || href.startsWith("/") || href.startsWith("./")) {
+    return true;
+  }
+
+  try {
+    const protocol = new URL(href).protocol;
+    return (
+      protocol === "http:" || protocol === "https:" || protocol === "mailto:"
+    );
+  } catch {
+    return false;
+  }
+};
+
+const renderInlineMarkdown = (value: string, key: string): Child[] =>
+  value
+    .split(
+      /(\[[^\]]+\]\([^\s)]+\)|`[^`]+`|\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|_[^_]+_)/,
+    )
+    .map((part, index) => {
+      const partKey = `${key}-${index}`;
+      const link = part.match(/^\[([^\]]+)\]\(([^\s)]+)\)$/);
+
+      if (link) {
+        const [, label, href] = link;
+        return isSafeMarkdownLink(href) ? (
+          <a
+            key={partKey}
+            href={href}
+            class="underline decoration-dotted underline-offset-2 hover:text-secondary"
+          >
+            {renderInlineMarkdown(label, partKey)}
+          </a>
+        ) : (
+          label
+        );
+      }
+
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return (
+          <code key={partKey} class="rounded bg-dark/10 px-1 dark:bg-light/10">
+            {part.slice(1, -1)}
+          </code>
+        );
+      }
+
+      if (
+        (part.startsWith("**") && part.endsWith("**")) ||
+        (part.startsWith("__") && part.endsWith("__"))
+      ) {
+        return (
+          <strong key={partKey}>
+            {renderInlineMarkdown(part.slice(2, -2), partKey)}
+          </strong>
+        );
+      }
+
+      if (
+        (part.startsWith("*") && part.endsWith("*")) ||
+        (part.startsWith("_") && part.endsWith("_"))
+      ) {
+        return (
+          <em key={partKey}>
+            {renderInlineMarkdown(part.slice(1, -1), partKey)}
+          </em>
+        );
+      }
+
+      return part;
+    });
+
+const MarkdownContent = ({ content }: { content: string }) => {
+  const blocks: Child[] = [];
+  const lines = content.split(/\r?\n/);
+  let paragraph: string[] = [];
+
+  const flushParagraph = () => {
+    if (paragraph.length === 0) {
+      return;
+    }
+
+    const value = paragraph.join(" ");
+    blocks.push(
+      <p key={`paragraph-${blocks.length}`}>
+        {renderInlineMarkdown(value, `paragraph-${blocks.length}`)}
+      </p>,
+    );
+    paragraph = [];
+  };
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    const heading = line.match(/^(#{1,6})\s+(.+)$/);
+    const listItem = line.match(/^[-*+]\s+(.+)$/);
+    const numberedListItem = line.match(/^\d+[.)]\s+(.+)$/);
+
+    if (!line.trim()) {
+      flushParagraph();
+    } else if (heading) {
+      flushParagraph();
+      const Heading = `h${heading[1].length}` as
+        | "h1"
+        | "h2"
+        | "h3"
+        | "h4"
+        | "h5"
+        | "h6";
+      blocks.push(
+        <Heading key={`heading-${blocks.length}`} class="font-mono font-bold">
+          {renderInlineMarkdown(heading[2], `heading-${blocks.length}`)}
+        </Heading>,
+      );
+    } else if (listItem || numberedListItem) {
+      flushParagraph();
+      const ordered = Boolean(numberedListItem);
+      const items: string[] = [];
+
+      while (index < lines.length) {
+        const item = lines[index].match(
+          ordered ? /^\d+[.)]\s+(.+)$/ : /^[-*+]\s+(.+)$/,
+        );
+        if (!item) {
+          break;
+        }
+        items.push(item[1]);
+        index += 1;
+      }
+      index -= 1;
+
+      const List = ordered ? "ol" : "ul";
+      blocks.push(
+        <List
+          key={`list-${blocks.length}`}
+          class={
+            ordered ? "list-decimal space-y-1 pl-5" : "list-disc space-y-1 pl-5"
+          }
+        >
+          {items.map((item, itemIndex) => (
+            <li key={`list-item-${itemIndex}`}>
+              {renderInlineMarkdown(item, `list-${blocks.length}-${itemIndex}`)}
+            </li>
+          ))}
+        </List>,
+      );
+    } else {
+      paragraph.push(line);
+    }
+  }
+
+  flushParagraph();
+
+  return <div class="space-y-3 wrap-break-word">{blocks}</div>;
+};
 
 const formatEventTime = (
   startTime?: string,
@@ -127,8 +283,8 @@ const CuratedEvents = ({ events }: { events: CuratedEvent[] }) => (
                   {event.description ? (
                     <div class="grid gap-2 py-3 md:grid-cols-[8rem_1fr]">
                       <dt class="font-mono text-sm opacity-70">About</dt>
-                      <dd class="whitespace-pre-wrap break-words">
-                        {event.description}
+                      <dd>
+                        <MarkdownContent content={event.description} />
                       </dd>
                     </div>
                   ) : null}
