@@ -133,8 +133,8 @@ export const contributors = [
     handle: "irohas.eth",
     role: "Lead",
     href: [
-      "https://bsky.app/profile/irohas.eth.sucks",
-      "https://github.com/neila",
+      "https://bsky.app/profile/irohas.eth.sucks/",
+      "https://github.com/i68s/",
       "https://irohas.eth.link/",
     ],
   },
