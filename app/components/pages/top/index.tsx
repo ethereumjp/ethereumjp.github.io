@@ -6,6 +6,7 @@ import {
   getInvolvementLinks,
   scheduleItems,
 } from "@/components/pages/top/data";
+import Partners from "@/components/pages/top/Partners";
 import PastEvents from "@/components/pages/top/PastEvents";
 import ScheduleFallback from "@/components/pages/top/ScheduleFallback";
 import Section from "@/components/pages/top/Section";
@@ -46,6 +47,7 @@ const copy = {
       "You should take precaution to stay safe since the streets in Tokyo are generally narrow and crowded.",
     taxiTitle: "🚖 Taxis",
     taxiText: "Taxis are available through apps like",
+    partnersTitle: "Our Partners",
     teamTitle: "Our Team",
   },
   ja: {
@@ -79,6 +81,7 @@ const copy = {
       "などのアプリが使えます。東京の道は一般的に狭く混雑しているため、安全に十分注意してください。",
     taxiTitle: "🚖 タクシー",
     taxiText: "タクシーは次のようなアプリから利用できます:",
+    partnersTitle: "パートナー",
     teamTitle: "主催チーム",
   },
 } satisfies Record<Locale, Record<string, string | string[]>>;
@@ -232,6 +235,10 @@ const TopPage = ({
       <div class="w-full pt-8 pb-9">
         <PastEvents locale={locale} />
       </div>
+
+      <Section title={labels.partnersTitle} className="border-0">
+        <Partners />
+      </Section>
 
       <Section title={labels.teamTitle} className="border-t">
         <Contributors />

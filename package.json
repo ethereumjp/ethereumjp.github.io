@@ -1,5 +1,5 @@
 {
-  "name": "www.ethtokyo.com",
+  "name": "www.ethtokyo.org",
   "type": "module",
   "scripts": {
     "dev": "vite",
