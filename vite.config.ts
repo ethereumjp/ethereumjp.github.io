@@ -100,6 +100,9 @@ export default defineConfig(({ mode }) => {
     build: {
       emptyOutDir: false,
     },
+    ssr: {
+      external: ["sharp"],
+    },
     plugins: [
       ...basePlugins,
       honox(),

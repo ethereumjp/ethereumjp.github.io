@@ -23,8 +23,11 @@ const EventThumbnail = ({
       <img
         src={thumbnail}
         alt=""
-        class="max-h-full max-w-full object-contain"
+        width="320"
+        height="160"
+        class="h-auto w-auto max-h-full max-w-full object-contain"
         loading="lazy"
+        decoding="async"
       />
     </div>
   );

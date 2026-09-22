@@ -1,5 +1,5 @@
 import {
-  cachePrivateThumbnail,
+  cacheEventThumbnail,
   fetchFormbricksThumbnailMap,
 } from "@/lib/formbricks";
 
@@ -124,14 +124,19 @@ const resolveEventThumbnail = async (
   }
 
   if (isFormbricksPrivateStorageUrl(sourceUrl) && formbricksPat) {
-    return cachePrivateThumbnail(
+    return cacheEventThumbnail(
       sourceUrl,
       { name: event.name, startDate: event.startDate },
       formbricksPat,
     );
   }
 
-  return resolvePublicThumbnailUrl(sourceUrl);
+  const cachedThumbnail = await cacheEventThumbnail(sourceUrl, {
+    name: event.name,
+    startDate: event.startDate,
+  });
+
+  return cachedThumbnail ?? resolvePublicThumbnailUrl(sourceUrl);
 };
 
 export const formatEventDate = (
