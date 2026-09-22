@@ -34,13 +34,16 @@ const PastEvents = ({ locale }: { locale: Locale }) => {
       </div>
       <div class="flex overflow-hidden gap-2 md:gap-4 marquee py-4">
         <div class="flex shrink-0 justify-start gap-2 md:gap-4 min-w-max animate-marquee">
-          {pastEventImages.map((src, i) => (
+          {pastEventImages.map((image, i) => (
             <div key={i} class="h-48 shrink-0">
               <img
-                src={src}
+                src={image.src}
                 alt={`event footage ${i + 1}`}
+                width={image.width}
+                height={image.height}
                 class="h-48 w-auto rounded-lg object-cover"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           ))}
@@ -50,13 +53,16 @@ const PastEvents = ({ locale }: { locale: Locale }) => {
           class="flex shrink-0 justify-start gap-2 md:gap-4 min-w-max animate-marquee"
           aria-hidden="true"
         >
-          {pastEventImages.map((src, i) => (
+          {pastEventImages.map((image, i) => (
             <div key={`dup-${i}`} class="h-48 shrink-0">
               <img
-                src={src}
+                src={image.src}
                 alt=""
+                width={image.width}
+                height={image.height}
                 class="h-48 w-auto rounded-lg object-cover"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           ))}

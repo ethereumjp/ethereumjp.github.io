@@ -1,5 +1,7 @@
+import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import sharp from "sharp";
 
 const FORMBRICKS_HOST = "https://formbricks.ethtokyo.org";
 // Production SSG overrides this with a directory outside Vite's watched root.
@@ -23,28 +25,9 @@ type ThumbnailFileInfo = {
   startDate: string;
 };
 
-const extensionFromContentType = (contentType: string): string => {
-  if (contentType.includes("png")) {
-    return "png";
-  }
-  if (contentType.includes("jpeg") || contentType.includes("jpg")) {
-    return "jpg";
-  }
-  if (contentType.includes("webp")) {
-    return "webp";
-  }
-  if (contentType.includes("gif")) {
-    return "gif";
-  }
-  if (contentType.includes("svg")) {
-    return "svg";
-  }
-  return "bin";
-};
-
 export const buildThumbnailFilename = (
   { name, startDate }: ThumbnailFileInfo,
-  extension: string,
+  fingerprint: string,
 ): string => {
   const slug = name
     .toLowerCase()
@@ -54,7 +37,7 @@ export const buildThumbnailFilename = (
     .replace(/^-|-$/g, "");
   const date = startDate.replace(/[^0-9]+/g, "-").replace(/^-|-$/g, "");
 
-  return `${date}-${slug || "event"}.${extension}`;
+  return `${date}-${slug || "event"}-${fingerprint}.webp`;
 };
 
 const extractThumbnailUrl = (
@@ -115,14 +98,14 @@ export const fetchFormbricksThumbnailMap = async (): Promise<
   return thumbnails;
 };
 
-export const cachePrivateThumbnail = async (
+export const cacheEventThumbnail = async (
   sourceUrl: string,
   fileInfo: ThumbnailFileInfo,
-  apiKey: string,
+  apiKey?: string,
 ): Promise<string | undefined> => {
   try {
     const response = await fetch(sourceUrl, {
-      headers: { "x-api-key": apiKey },
+      headers: apiKey ? { "x-api-key": apiKey } : undefined,
       signal: AbortSignal.timeout(10000),
     });
 
@@ -135,13 +118,26 @@ export const cachePrivateThumbnail = async (
       return undefined;
     }
 
-    const extension = extensionFromContentType(contentType);
-    const filename = buildThumbnailFilename(fileInfo, extension);
-    await mkdir(THUMBNAIL_OUTPUT_DIR, { recursive: true });
-    await writeFile(
-      join(THUMBNAIL_OUTPUT_DIR, filename),
+    const optimizedImage = await sharp(
       Buffer.from(await response.arrayBuffer()),
-    );
+    )
+      .rotate()
+      .resize({
+        width: 320,
+        height: 160,
+        fit: "contain",
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+        withoutEnlargement: true,
+      })
+      .webp({ quality: 80, effort: 6 })
+      .toBuffer();
+    const fingerprint = createHash("sha256")
+      .update(optimizedImage)
+      .digest("hex")
+      .slice(0, 10);
+    const filename = buildThumbnailFilename(fileInfo, fingerprint);
+    await mkdir(THUMBNAIL_OUTPUT_DIR, { recursive: true });
+    await writeFile(join(THUMBNAIL_OUTPUT_DIR, filename), optimizedImage);
 
     return `/images/2026/eventthumbnails/${filename}`;
   } catch {

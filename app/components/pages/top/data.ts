@@ -119,12 +119,12 @@ export const getInvolvementLinks = (locale: Locale) =>
   });
 
 export const pastEventImages = [
-  "/images/2025/conf1.jpg",
-  "/images/2025/conf2.jpg",
-  "/images/2025/conf3.jpg",
-  "/images/2025/conf4.jpg",
-  "/images/2025/hack1.jpg",
-  "/images/2025/hack2.jpg",
+  { src: "/images/2025/conf1.webp", width: 256, height: 384 },
+  { src: "/images/2025/conf2.webp", width: 576, height: 384 },
+  { src: "/images/2025/conf3.webp", width: 576, height: 384 },
+  { src: "/images/2025/conf4.webp", width: 576, height: 384 },
+  { src: "/images/2025/hack1.webp", width: 576, height: 384 },
+  { src: "/images/2025/hack2.webp", width: 576, height: 384 },
 ];
 
 export const contributors = [
