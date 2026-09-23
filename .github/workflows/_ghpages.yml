@@ -1,0 +1,35 @@
+name: Reusable GitHub Pages mirror
+
+on:
+  workflow_call:
+    inputs:
+      enabled:
+        description: "Whether to publish the optional mirror"
+        required: true
+        type: boolean
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    if: inputs.enabled == true
+    name: Deploy GitHub Pages mirror
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: dist
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Publish mirror
+        id: deployment
+        uses: actions/deploy-pages@v4

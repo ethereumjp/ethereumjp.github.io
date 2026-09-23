@@ -4,9 +4,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --mode client && vite build",
+    "build:node": "vite build --mode client && vite build --mode node",
+    "build:vercel": "vite build --mode client && vite build --mode vercel",
     "prepare": "lefthook install",
     "preview": "$npm_execpath build && vite preview",
+    "start": "cd dist && node index.js",
     "check": "biome check ./app",
+    "test": "node --test",
     "check:fix": "biome check ./app --write",
     "lint": "biome lint ./app",
     "lint:fix": "biome lint ./app --write",
@@ -15,6 +19,7 @@
   },
   "private": true,
   "dependencies": {
+    "@hono/node-server": "^1.19.15",
     "hono": "^4.10.8",
     "honox": "0.1.52"
   },

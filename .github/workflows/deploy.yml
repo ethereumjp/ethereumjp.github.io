@@ -1,0 +1,49 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      vercel_target:
+        description: "Vercel target for a manual deployment"
+        required: true
+        default: production
+        type: choice
+        options: [preview, production]
+      github_pages_mirror:
+        description: "Also publish the optional GitHub Pages mirror"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  ci:
+    if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/_ci.yml
+    with:
+      static_build: ${{ inputs.github_pages_mirror == true }}
+    secrets: inherit
+
+  vercel:
+    needs: ci
+    if: (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && (github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch')
+    uses: ./.github/workflows/_vercel.yml
+    with:
+      target: ${{ github.event_name == 'pull_request' && 'preview' || github.event_name == 'push' && 'production' || inputs.vercel_target }}
+    secrets: inherit
+
+  ghpages:
+    needs: ci
+    if: github.event_name == 'workflow_dispatch' && inputs.github_pages_mirror == true
+    uses: ./.github/workflows/_ghpages.yml
+    with:
+      enabled: true
+    secrets: inherit

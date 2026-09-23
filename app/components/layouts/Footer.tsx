@@ -74,11 +74,7 @@ const Footer = ({ locale }: { locale: Locale }) => {
           </h2>
           <ul class="space-y-2">
             <li>
-              <a
-                href="https://github.com/ethereumjp/ethereumjp.github.io/tree/main/public/assets"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={localizedPath("/brand-assets", locale)}>
                 {copy.press.brandassets}
               </a>
             </li>

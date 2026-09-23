@@ -99,6 +99,10 @@ const pageTitles = {
     en: "Terms of Service | ETHTokyo '26",
     ja: "利用規約 | ETHTokyo '26",
   },
+  brandAssets: {
+    en: "Brand Assets | ETHTokyo '26",
+    ja: "ブランドアセット | ETHTokyo '26",
+  },
 } satisfies Record<string, Record<Locale, string>>;
 
 export type PageKey = keyof typeof pageTitles;

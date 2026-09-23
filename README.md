@@ -53,20 +53,26 @@ vite.config.ts   # two-pass build: `--mode client` bundle + SSG
 
 ## Deploy
 
-Deployment is automated via GitHub Actions ([`.github/workflows/publish.yml`](.github/workflows/publish.yml)) to GitHub Pages.
+Vercel is the primary deployment target. The modular GitHub Actions workflows share
+the reusable CI workflow in [`.github/workflows/_ci.yml`](.github/workflows/_ci.yml):
 
-- **CI**: every push to any branch runs type check, lint, and build.
-- **Deploy**: only pushes to `main` upload the artifact and publish to Pages.
-- **Manual**: trigger via the Actions tab (`Run workflow`) or `gh workflow run publish.yml --ref main`.
+- Pull requests deploy a Vercel preview via [`deploy.yml`](.github/workflows/deploy.yml) and [`_vercel.yml`](.github/workflows/_vercel.yml).
+- Pushes to `main` deploy production through the same target-aware workflow.
+- CI checks run through [`deploy.yml`](.github/workflows/deploy.yml) and [`_ci.yml`](.github/workflows/_ci.yml); the static Pages build is enabled only when the mirror is requested.
+- Vercel builds the source with `pnpm build:vercel`, preserving the Hono server function and allowing server/edge routes.
+- An optional, manual GitHub Pages mirror is available through [`_ghpages.yml`](.github/workflows/_ghpages.yml).
 
 ### Setup
 
-1. In repo **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**.
+1. Create or link the Vercel project and add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` as repository or environment secrets.
 2. Add the build-time secrets under **Settings → Secrets and variables → Actions** (see [`.env.example`](.env.example)):
    - `VITE_AIRTABLE_NEWSLETTER_PAT` / `_BASE` / `_TABLE`
    - `AIRTABLE_EVENTCURATE_PAT` / `_BASE` / `_TABLE`
 
 > Note: `VITE_`-prefixed vars are inlined into the client bundle and are publicly visible by design.
+
+To enable the Pages mirror, configure **Settings → Pages → Build and deployment** to use
+**GitHub Actions**, then manually run the optional mirror workflow from the Actions tab.
 
 ## License
 

@@ -1,0 +1,129 @@
+name: Reusable CI
+
+on:
+  workflow_call:
+    inputs:
+      static_build:
+        description: "Build the static dist artifact for the GitHub Pages mirror"
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      VITE_AIRTABLE_NEWSLETTER_PAT:
+        required: false
+      VITE_AIRTABLE_NEWSLETTER_BASE:
+        required: false
+      VITE_AIRTABLE_NEWSLETTER_TABLE:
+        required: false
+      AIRTABLE_EVENTCURATE_PAT:
+        required: false
+      AIRTABLE_EVENTCURATE_BASE:
+        required: false
+      AIRTABLE_EVENTCURATE_TABLE:
+        required: false
+      FORMBRICKS_EVENT_PAT:
+        required: false
+      FORMBRICKS_EVENT_SURVEY_ID:
+        required: false
+
+permissions:
+  contents: read
+
+env:
+  PNPM_VERSION: 10.25.0
+  NODE_VERSION: 24.x
+
+jobs:
+  tsc:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec tsc --noEmit
+
+  lint:
+    name: Biome lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+
+  format:
+    name: Biome format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format
+
+  test:
+    name: Test check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  build:
+    if: inputs.static_build == true
+    name: Static build
+    needs: [tsc, lint, format, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build static site
+        run: pnpm build
+        env:
+          DO_NOT_TRACK: 1
+          VITE_AIRTABLE_NEWSLETTER_PAT: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_PAT }}
+          VITE_AIRTABLE_NEWSLETTER_BASE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_BASE }}
+          VITE_AIRTABLE_NEWSLETTER_TABLE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_TABLE }}
+          AIRTABLE_EVENTCURATE_PAT: ${{ secrets.AIRTABLE_EVENTCURATE_PAT }}
+          AIRTABLE_EVENTCURATE_BASE: ${{ secrets.AIRTABLE_EVENTCURATE_BASE }}
+          AIRTABLE_EVENTCURATE_TABLE: ${{ secrets.AIRTABLE_EVENTCURATE_TABLE }}
+          FORMBRICKS_EVENT_PAT: ${{ secrets.FORMBRICKS_EVENT_PAT }}
+          FORMBRICKS_EVENT_SURVEY_ID: ${{ secrets.FORMBRICKS_EVENT_SURVEY_ID }}
+      - name: Upload static build
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: dist
+          if-no-files-found: error

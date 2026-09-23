@@ -2,6 +2,8 @@ import { existsSync } from "node:fs";
 import { readdir, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import nodeBuild from "@hono/vite-build/node";
+import vercelBuild from "@hono/vite-build/vercel";
 import ssg from "@hono/vite-ssg";
 import tailwindcss from "@tailwindcss/vite";
 import honox from "honox/vite";
@@ -88,6 +90,45 @@ export default defineConfig(({ mode }) => {
   }
 
   const env = loadEnv(mode, process.cwd(), "");
+
+  if (mode === "node") {
+    return {
+      define: {
+        ...buildTimeEnvDefine(env),
+        "process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR": "undefined",
+      },
+      build: {
+        emptyOutDir: false,
+      },
+      ssr: {
+        external: ["sharp"],
+      },
+      plugins: [
+        ...basePlugins,
+        honox(),
+        nodeBuild({
+          entry,
+          //port: 10000,
+        }),
+      ],
+    };
+  }
+
+  if (mode === "vercel") {
+    return {
+      define: {
+        ...buildTimeEnvDefine(env),
+        "process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR": "undefined",
+      },
+      build: {
+        emptyOutDir: false,
+      },
+      ssr: {
+        external: ["sharp"],
+      },
+      plugins: [...basePlugins, honox(), vercelBuild({ entry })],
+    };
+  }
 
   return {
     define: {
