@@ -1,10 +1,9 @@
-name: Reusable Vercel deployment
+name: Deploy to Vercel
 
 on:
   workflow_call:
     inputs:
       target:
-        description: "preview or production"
         required: true
         type: string
     secrets:
@@ -15,21 +14,21 @@ on:
       VERCEL_PROJECT_ID:
         required: true
       VITE_AIRTABLE_NEWSLETTER_PAT:
-        required: false
+        required: true
       VITE_AIRTABLE_NEWSLETTER_BASE:
-        required: false
+        required: true
       VITE_AIRTABLE_NEWSLETTER_TABLE:
-        required: false
+        required: true
       AIRTABLE_EVENTCURATE_PAT:
-        required: false
+        required: true
       AIRTABLE_EVENTCURATE_BASE:
-        required: false
+        required: true
       AIRTABLE_EVENTCURATE_TABLE:
-        required: false
+        required: true
       FORMBRICKS_EVENT_PAT:
-        required: false
+        required: true
       FORMBRICKS_EVENT_SURVEY_ID:
-        required: false
+        required: true
 
 permissions:
   contents: read
@@ -37,13 +36,13 @@ permissions:
 jobs:
   preview:
     if: inputs.target == 'preview'
-    name: Deploy Vercel preview
+    name: Deploy preview
     runs-on: ubuntu-latest
     environment: preview
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v7
+      - uses: actions/setup-node@v6
         with:
           node-version: 24.x
           cache: pnpm
@@ -54,7 +53,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      - name: Build Vercel output
+      - name: Build project
         run: pnpm build:vercel
         env:
           DO_NOT_TRACK: 1
@@ -74,13 +73,13 @@ jobs:
 
   production:
     if: inputs.target == 'production'
-    name: Deploy Vercel production
+    name: Deploy production
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v7
+      - uses: actions/setup-node@v6
         with:
           node-version: 24.x
           cache: pnpm
