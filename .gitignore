@@ -60,3 +60,5 @@
 !.yarn/versions
 
 dist
+.vercel
+.env*
