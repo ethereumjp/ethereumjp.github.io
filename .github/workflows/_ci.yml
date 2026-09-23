@@ -33,8 +33,8 @@ env:
   NODE_VERSION: 24.x
 
 jobs:
-  tsc:
-    name: TypeScript
+  scan:
+    name: Basic checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -46,37 +46,10 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec tsc --noEmit
-
-  lint:
-    name: Biome lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-
-  format:
-    name: Biome format
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm format
+      - name: TypeScript
+        run: pnpm exec tsc --noEmit
+      - name: lint & format
+        run: pnpm check
 
   test:
     name: Test check
@@ -95,7 +68,7 @@ jobs:
 
   build:
     name: Static build
-    needs: [tsc, lint, format, test]
+    needs: [scan, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
