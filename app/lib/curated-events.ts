@@ -34,13 +34,17 @@ type AirtableCurateFields = {
   "6. Event End Date (if multiple days)"?: string;
   "7. Event End Time (HH:MM)"?: string;
   "8. Event Link"?: string;
-  "9. Event thumbnail or logo"?: string;
+  "9. Event thumbnail or logo"?: string | AirtableAttachment[];
   "10. Venue Name"?: string;
   "11. Venue Address"?: string;
   "12. Venue Link"?: string;
   "13. Link to Event Group Chat"?: string;
   "14. Organizer name"?: string;
   "15. Organizer email"?: string;
+};
+
+type AirtableAttachment = {
+  url?: string;
 };
 
 type AirtableRecord = {
@@ -51,6 +55,17 @@ type AirtableRecord = {
 type AirtableResponse = {
   records: AirtableRecord[];
   offset?: string;
+};
+
+const getAirtableThumbnailUrl = (
+  thumbnail: AirtableCurateFields["9. Event thumbnail or logo"],
+): string | undefined => {
+  if (typeof thumbnail === "string") {
+    return thumbnail;
+  }
+
+  return thumbnail?.find((attachment) => typeof attachment.url === "string")
+    ?.url;
 };
 
 const mapRecord = (record: AirtableRecord): CuratedEvent | null => {
@@ -69,7 +84,7 @@ const mapRecord = (record: AirtableRecord): CuratedEvent | null => {
     description: fields["2. Event Description"],
     type: fields["3. Event Type"],
     link: fields["8. Event Link"],
-    thumbnail: fields["9. Event thumbnail or logo"],
+    thumbnail: getAirtableThumbnailUrl(fields["9. Event thumbnail or logo"]),
     startDate,
     endDate: fields["6. Event End Date (if multiple days)"],
     startTime: fields["5. Event Start Time (HH:MM)"],
