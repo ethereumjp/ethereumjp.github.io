@@ -37,7 +37,7 @@ jobs:
     secrets: inherit
 
   deploy-render:
-    name: Render ${{ github.sha }}
+    name: Commit mirror
     needs: ci
     if: ${{ github.event_name == 'push' }}
     uses: ./.github/workflows/_render.yml
