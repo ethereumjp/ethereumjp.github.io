@@ -55,7 +55,7 @@ jobs:
           FORMBRICKS_EVENT_PAT: ${{ secrets.FORMBRICKS_EVENT_PAT }}
           FORMBRICKS_EVENT_SURVEY_ID: ${{ secrets.FORMBRICKS_EVENT_SURVEY_ID }}
       - name: Upload static build
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: static-site
           path: dist
