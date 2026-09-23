@@ -39,9 +39,7 @@ jobs:
   deploy-render:
     name: Render ${{ github.sha }}
     needs: ci
-    if: >-
-      github.ref == 'refs/heads/main' &&
-      (github.event_name != 'workflow_dispatch' || inputs.target == 'production')
+    if: ${{ github.event_name == 'push' }}
     uses: ./.github/workflows/_render.yml
     secrets: inherit
 
