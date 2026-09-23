@@ -34,7 +34,7 @@ env:
 
 jobs:
   scan:
-    name: Basic checks
+    name: basic checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -52,7 +52,6 @@ jobs:
         run: pnpm check
 
   test:
-    name: Test check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
