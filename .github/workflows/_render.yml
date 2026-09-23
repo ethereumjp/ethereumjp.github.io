@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  render-deploy:
+  render:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render deploy
@@ -36,7 +36,7 @@ jobs:
             echo "comment='Render deployment request accepted for commit ${GITHUB_SHA}'" >> "$GITHUB_OUTPUT"
           fi
       - name: Result preview
-        if: ${{ inputs.target !== 'production' }}
+        if: ${{  }}
         uses: actions/github-script@v7
         env:
           PREVIEW_URL: ${{ steps.render-deploy.outputs.comment }}

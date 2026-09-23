@@ -1,10 +1,9 @@
-name: Reusable CI
+name: CI
 
 on:
   workflow_call:
     inputs:
-      static_build:
-        description: "Build the static dist artifact for the GitHub Pages mirror"
+      ghpages:
         required: false
         type: boolean
         default: false
@@ -94,7 +93,6 @@ jobs:
       - run: pnpm test
 
   build:
-    if: inputs.static_build == true
     name: Static build
     needs: [tsc, lint, format, test]
     runs-on: ubuntu-latest
@@ -121,6 +119,7 @@ jobs:
           FORMBRICKS_EVENT_PAT: ${{ secrets.FORMBRICKS_EVENT_PAT }}
           FORMBRICKS_EVENT_SURVEY_ID: ${{ secrets.FORMBRICKS_EVENT_SURVEY_ID }}
       - name: Upload static build
+        if: inputs.ghpages == true
         uses: actions/upload-artifact@v5
         with:
           name: static-site

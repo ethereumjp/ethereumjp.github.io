@@ -34,7 +34,7 @@ permissions:
   contents: read
 
 jobs:
-  vercel-deploy:
+  vercel:
     if: inputs.target == 'preview' || inputs.target == 'production'
     runs-on: ubuntu-latest
     timeout-minutes: 5
