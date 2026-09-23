@@ -74,8 +74,17 @@ const emitEventThumbnailsPlugin = (): Plugin => ({
 
 export default defineConfig(({ mode }) => {
   if (mode === "client") {
+    const isVercelClientBuild = process.env.VERCEL_CLIENT_BUILD === "true";
+
     return {
       build: {
+        ...(isVercelClientBuild
+          ? {
+              outDir: ".vercel/output/static",
+              emptyOutDir: true,
+              copyPublicDir: false,
+            }
+          : {}),
         rollupOptions: {
           input: ["./app/client.ts", "./app/style.css"],
           output: {
