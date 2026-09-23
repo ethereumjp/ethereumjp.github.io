@@ -139,6 +139,13 @@ const resolveEventThumbnail = async (
     );
   }
 
+  // Airtable attachment URLs are retrieved at request time on runtime targets.
+  // Do not preflight them with HEAD: Airtable may reject it even though the
+  // browser's normal image GET succeeds.
+  if (!isStaticThumbnailBuild) {
+    return sourceUrl;
+  }
+
   const cachedThumbnail = await cacheEventThumbnail(sourceUrl, {
     name: event.name,
     startDate: event.startDate,
