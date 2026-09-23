@@ -43,7 +43,7 @@ jobs:
   deploy-ghpages:
     name: Static mirror
     needs: ci
-    if: ${{ github.ref == 'refs/heads/main' && inputs.static_build }}
+    if: ${{ github.ref == 'refs/heads/main' && inputs.mirror }}
     uses: ./.github/workflows/_ghpages.yml
     with:
       enabled: true
