@@ -1,5 +1,4 @@
 import { jsxRenderer } from "hono/jsx-renderer";
-import { Link } from "honox/server";
 import Meta from "@/components/layouts/Meta";
 import { detectLocaleFromPath } from "@/i18n";
 
@@ -33,7 +32,7 @@ export default jsxRenderer(({ children }, c) => {
           `,
           }}
         />
-        <Link href="/app/style.css" rel="stylesheet" />
+        <link href="/static/style.css" rel="stylesheet" />
         {import.meta.env.PROD ? (
           <script type="module" src="/static/client.js"></script>
         ) : (

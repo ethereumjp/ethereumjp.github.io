@@ -90,7 +90,10 @@ export default defineConfig(({ mode }) => {
           output: {
             entryFileNames: "static/client.js",
             chunkFileNames: "static/assets/[name]-[hash].js",
-            assetFileNames: "static/assets/[name]-[hash].[ext]",
+            assetFileNames: (asset) =>
+              asset.name === "style.css"
+                ? "static/style.css"
+                : "static/assets/[name]-[hash].[ext]",
           },
         },
       },
