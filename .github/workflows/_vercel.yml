@@ -34,11 +34,14 @@ permissions:
   contents: read
 
 jobs:
-  preview:
-    if: inputs.target == 'preview'
-    name: Deploy preview
+  vercel-deploy:
+    if: inputs.target == 'preview' || inputs.target == 'production'
     runs-on: ubuntu-latest
-    environment: preview
+    timeout-minutes: 5
+    environment: ${{ inputs.target }}
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -49,47 +52,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Link Vercel project
         run: pnpm dlx vercel@latest link --yes --project="$VERCEL_PROJECT_ID" --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      - name: Build project
-        run: pnpm build:vercel
-        env:
-          DO_NOT_TRACK: 1
-          VITE_AIRTABLE_NEWSLETTER_PAT: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_PAT }}
-          VITE_AIRTABLE_NEWSLETTER_BASE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_BASE }}
-          VITE_AIRTABLE_NEWSLETTER_TABLE: ${{ secrets.VITE_AIRTABLE_NEWSLETTER_TABLE }}
-          AIRTABLE_EVENTCURATE_PAT: ${{ secrets.AIRTABLE_EVENTCURATE_PAT }}
-          AIRTABLE_EVENTCURATE_BASE: ${{ secrets.AIRTABLE_EVENTCURATE_BASE }}
-          AIRTABLE_EVENTCURATE_TABLE: ${{ secrets.AIRTABLE_EVENTCURATE_TABLE }}
-          FORMBRICKS_EVENT_PAT: ${{ secrets.FORMBRICKS_EVENT_PAT }}
-          FORMBRICKS_EVENT_SURVEY_ID: ${{ secrets.FORMBRICKS_EVENT_SURVEY_ID }}
-      - name: Deploy preview
-        run: pnpm dlx vercel@latest deploy --prebuilt --yes --token="$VERCEL_TOKEN" --scope="$VERCEL_ORG_ID"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-
-  production:
-    if: inputs.target == 'production'
-    name: Deploy production
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Link Vercel project
-        run: pnpm dlx vercel@latest link --yes --project="$VERCEL_PROJECT_ID" --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Build Vercel output
         run: pnpm build:vercel
         env:
@@ -102,8 +64,48 @@ jobs:
           AIRTABLE_EVENTCURATE_TABLE: ${{ secrets.AIRTABLE_EVENTCURATE_TABLE }}
           FORMBRICKS_EVENT_PAT: ${{ secrets.FORMBRICKS_EVENT_PAT }}
           FORMBRICKS_EVENT_SURVEY_ID: ${{ secrets.FORMBRICKS_EVENT_SURVEY_ID }}
-      - name: Deploy production
-        run: pnpm dlx vercel@latest deploy --prebuilt --yes --prod --token="$VERCEL_TOKEN" --scope="$VERCEL_ORG_ID"
+      - name: Deploy ${{ inputs.target }}
+        id: vercel-deploy
+        run: |
+          deploy=$(pnpm dlx vercel@latest deploy --prebuilt --yes ${{ inputs.target == 'production' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }} 2>&1)
+          printf '%s\n' "$deploy"
+          url=$(printf '%s\n' "$deploy" | grep -Eo 'https://[^[:space:]]+\.vercel\.app' | tail -n 1)
+          if [[ -z "$url" ]]; then
+            echo 'Unable to extract the Vercel deployment URL.' >&2
+            exit 1
+          fi
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+      - name: Post preview link
+        if: ${{ inputs.target !== 'production' }}
+        uses: actions/github-script@v7
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          PREVIEW_URL: ${{ steps.vercel-deploy.outputs.url }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            if (!process.env.PREVIEW_URL) return;
+            const { owner, repo } = context.repo;
+            const associated = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner, repo, commit_sha: context.sha,
+            });
+            const pull = associated.data.find((item) => item.state === 'open');
+            if (!pull) return;
+            const body = `Vercel Preview Link: ${process.env.PREVIEW_URL}`;
+            const comments = await github.rest.issues.listComments({
+              owner, repo, issue_number: pull.number,
+            });
+            const existing = comments.data.find(
+              (comment) =>
+                comment.user?.login === 'github-actions[bot]' &&
+                comment.body?.startsWith('Vercel Preview Link:')
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: existing.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number: pull.number, body,
+              });
+            }
+

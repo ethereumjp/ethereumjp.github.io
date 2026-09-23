@@ -40,6 +40,12 @@ jobs:
       target: ${{ github.event_name == 'pull_request' && 'preview' || github.event_name == 'push' && 'production' || inputs.vercel_target }}
     secrets: inherit
 
+  render:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/_render.yml
+    secrets: inherit
+
   ghpages:
     needs: ci
     if: github.event_name == 'workflow_dispatch' && inputs.github_pages_mirror == true

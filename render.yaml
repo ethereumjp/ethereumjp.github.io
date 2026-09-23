@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ethtokyo
+    runtime: node
+    plan: free
+    buildCommand: pnpm install --frozen-lockfile && pnpm build:render
+    startCommand: pnpm start:render
+    autoDeployTrigger: off
+    envVars:
+      - key: AIRTABLE_EVENTCURATE_PAT
+        sync: false
+      - key: AIRTABLE_EVENTCURATE_BASE
+        sync: false
+      - key: AIRTABLE_EVENTCURATE_TABLE
+        sync: false
+      - key: FORMBRICKS_EVENT_PAT
+        sync: false
+      - key: FORMBRICKS_EVENT_SURVEY_ID
+        sync: false

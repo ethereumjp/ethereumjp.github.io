@@ -58,6 +58,7 @@ the reusable CI workflow in [`.github/workflows/_ci.yml`](.github/workflows/_ci.
 
 - Pull requests deploy a Vercel preview via [`deploy.yml`](.github/workflows/deploy.yml) and [`_vercel.yml`](.github/workflows/_vercel.yml).
 - Pushes to `main` deploy production through the same target-aware workflow.
+- Pushes to `main` also request a Render deployment for the exact passing commit through [`_render.yml`](.github/workflows/_render.yml).
 - CI checks run through [`deploy.yml`](.github/workflows/deploy.yml) and [`_ci.yml`](.github/workflows/_ci.yml); the static Pages build is enabled only when the mirror is requested.
 - Vercel builds the source with `pnpm build:vercel`, preserving the Hono server function and allowing server/edge routes.
 - An optional, manual GitHub Pages mirror is available through [`_ghpages.yml`](.github/workflows/_ghpages.yml).
@@ -65,11 +66,15 @@ the reusable CI workflow in [`.github/workflows/_ci.yml`](.github/workflows/_ci.
 ### Setup
 
 1. Create or link the Vercel project and add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` as repository or environment secrets.
-2. Add the build-time secrets under **Settings → Secrets and variables → Actions** (see [`.env.example`](.env.example)):
+2. Create the Render web service from [`render.yaml`](render.yaml), keep its **Auto-Deploy** setting off, and add `RENDER_API_KEY` and `RENDER_SERVICE_ID` as GitHub Actions secrets.
+3. Add the build-time secrets under **Settings → Secrets and variables → Actions** (see [`.env.example`](.env.example)):
    - `VITE_AIRTABLE_NEWSLETTER_PAT` / `_BASE` / `_TABLE`
    - `AIRTABLE_EVENTCURATE_PAT` / `_BASE` / `_TABLE`
+   - `FORMBRICKS_EVENT_PAT` / `FORMBRICKS_EVENT_SURVEY_ID`
 
 > Note: `VITE_`-prefixed vars are inlined into the client bundle and are publicly visible by design.
+
+Render runtime environment variables are declared in [`render.yaml`](render.yaml) and must be filled in on the Render service. Render runs `pnpm install --frozen-lockfile && pnpm build:render`, then `pnpm start:render`.
 
 To enable the Pages mirror, configure **Settings → Pages → Build and deployment** to use
 **GitHub Actions**, then manually run the optional mirror workflow from the Actions tab.

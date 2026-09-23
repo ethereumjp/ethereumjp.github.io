@@ -91,7 +91,7 @@ export default defineConfig(({ mode }) => {
 
   const env = loadEnv(mode, process.cwd(), "");
 
-  if (mode === "node") {
+  if (mode === "render") {
     return {
       define: {
         ...buildTimeEnvDefine(env),
@@ -108,7 +108,7 @@ export default defineConfig(({ mode }) => {
         honox(),
         nodeBuild({
           entry,
-          //port: 10000,
+          port: 10000,
         }),
       ],
     };
