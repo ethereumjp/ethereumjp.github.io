@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   ghpages:
-    if: inputs.enabled == true
+    if: ${{ inputs.enabled }}
     name: Deploy GitHub Pages mirror
     runs-on: ubuntu-latest
     environment:

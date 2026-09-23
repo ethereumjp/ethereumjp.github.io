@@ -76,7 +76,7 @@ jobs:
           fi
           echo "url=${url}" >> "$GITHUB_OUTPUT"
       - name: Post preview link
-        if: ${{ inputs.target !== 'production' }}
+        if: ${{ inputs.target != 'production' }}
         uses: actions/github-script@v7
         env:
           PREVIEW_URL: ${{ steps.vercel-deploy.outputs.url }}
@@ -108,4 +108,3 @@ jobs:
                 owner, repo, issue_number: pull.number, body,
               });
             }
-

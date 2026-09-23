@@ -94,7 +94,6 @@ export default defineConfig(({ mode }) => {
   if (mode === "render") {
     return {
       define: {
-        ...buildTimeEnvDefine(env),
         "process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR": "undefined",
       },
       build: {

@@ -2,6 +2,8 @@ name: Deploy
 
 on:
   push:
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
       target:
@@ -23,27 +25,30 @@ jobs:
   ci:
     uses: ./.github/workflows/_ci.yml
     with:
-      ghpages: ${{ inputs.mirror }}
+      ghpages: ${{ inputs.mirror == true }}
     secrets: inherit
 
   deploy-vercel:
-    name: Deploy ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+    name: Deploy ${{ github.event_name == 'workflow_dispatch' && inputs.target || (github.ref == 'refs/heads/main' && 'production' || 'preview') }}
     needs: ci
     uses: ./.github/workflows/_vercel.yml
     with:
-      target: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      target: ${{ github.event_name == 'workflow_dispatch' && inputs.target || (github.ref == 'refs/heads/main' && 'production' || 'preview') }}
     secrets: inherit
 
   deploy-render:
     name: Render ${{ github.sha }}
     needs: ci
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name != 'workflow_dispatch' || inputs.target == 'production')
     uses: ./.github/workflows/_render.yml
     secrets: inherit
 
   deploy-ghpages:
     name: Static mirror
     needs: ci
-    if: ${{ github.ref == 'refs/heads/main' && inputs.mirror }}
+    if: ${{ github.ref == 'refs/heads/main' && inputs.mirror == true }}
     uses: ./.github/workflows/_ghpages.yml
     with:
       enabled: true

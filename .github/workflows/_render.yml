@@ -38,18 +38,18 @@ jobs:
       - name: Result preview
         uses: actions/github-script@v7
         env:
-          PREVIEW_URL: ${{ steps.render-deploy.outputs.comment }}
+          PREVIEW_COMMENT: ${{ steps.render-deploy.outputs.comment }}
         with:
           github-token: ${{ github.token }}
           script: |
-            if (!process.env.PREVIEW_URL) return;
+            if (!process.env.PREVIEW_COMMENT) return;
             const { owner, repo } = context.repo;
             const associated = await github.rest.repos.listPullRequestsAssociatedWithCommit({
               owner, repo, commit_sha: context.sha,
             });
             const pull = associated.data.find((item) => item.state === 'open');
             if (!pull) return;
-            const body = `Render Preview Link: ${process.env.PREVIEW_URL}`;
+            const body = process.env.PREVIEW_COMMENT;
             const comments = await github.rest.issues.listComments({
               owner, repo, issue_number: pull.number,
             });
