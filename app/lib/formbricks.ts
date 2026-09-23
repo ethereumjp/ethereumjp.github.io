@@ -1,14 +1,11 @@
 import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import sharp from "sharp";
 
 const FORMBRICKS_HOST = "https://formbricks.ethtokyo.org";
-// Production SSG overrides this with a directory outside Vite's watched root.
-// Development keeps using public/ so newly fetched images remain directly servable.
-const THUMBNAIL_OUTPUT_DIR =
-  process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR ??
-  join(process.cwd(), "public/images/2026/eventthumbnails");
+// Only the SSG build sets this. Serverless runtimes must not attempt to write
+// thumbnails or load sharp during request handling.
+const thumbnailOutputDir = process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR;
 
 type FormbricksResponse = {
   id: string;
@@ -103,7 +100,12 @@ export const cacheEventThumbnail = async (
   fileInfo: ThumbnailFileInfo,
   apiKey?: string,
 ): Promise<string | undefined> => {
+  if (!thumbnailOutputDir) {
+    return undefined;
+  }
+
   try {
+    const { default: sharp } = await import("sharp");
     const response = await fetch(sourceUrl, {
       headers: apiKey ? { "x-api-key": apiKey } : undefined,
       signal: AbortSignal.timeout(10000),
@@ -136,8 +138,8 @@ export const cacheEventThumbnail = async (
       .digest("hex")
       .slice(0, 10);
     const filename = buildThumbnailFilename(fileInfo, fingerprint);
-    await mkdir(THUMBNAIL_OUTPUT_DIR, { recursive: true });
-    await writeFile(join(THUMBNAIL_OUTPUT_DIR, filename), optimizedImage);
+    await mkdir(thumbnailOutputDir, { recursive: true });
+    await writeFile(join(thumbnailOutputDir, filename), optimizedImage);
 
     return `/images/2026/eventthumbnails/${filename}`;
   } catch {

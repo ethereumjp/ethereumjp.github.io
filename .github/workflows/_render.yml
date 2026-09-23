@@ -37,7 +37,7 @@ jobs:
             echo "comment='Render deployment request accepted for commit ${GITHUB_SHA}'" >> "$GITHUB_OUTPUT"
           fi
       - name: Result preview
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           PREVIEW_COMMENT: ${{ steps.render-deploy.outputs.comment }}
         with:
