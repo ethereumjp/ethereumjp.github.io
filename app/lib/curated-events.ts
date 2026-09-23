@@ -86,6 +86,10 @@ const mapRecord = (record: AirtableRecord): CuratedEvent | null => {
 const isFormbricksPrivateStorageUrl = (url: string): boolean =>
   url.includes("formbricks.ethtokyo.org/storage/") && url.includes("/private/");
 
+const isStaticThumbnailBuild = Boolean(
+  process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR,
+);
+
 const resolvePublicThumbnailUrl = async (
   url: string,
 ): Promise<string | undefined> => {
@@ -123,7 +127,11 @@ const resolveEventThumbnail = async (
     return undefined;
   }
 
-  if (isFormbricksPrivateStorageUrl(sourceUrl) && formbricksPat) {
+  if (isFormbricksPrivateStorageUrl(sourceUrl)) {
+    if (!formbricksPat) {
+      return undefined;
+    }
+
     return cacheEventThumbnail(
       sourceUrl,
       { name: event.name, startDate: event.startDate },
@@ -210,15 +218,20 @@ const loadCuratedEvents = async (): Promise<CuratedEvent[]> => {
     .filter((event): event is CuratedEvent => event !== null)
     .sort(compareEventsByStart);
 
-  let formbricksThumbnails = new Map<string, string>();
-  try {
-    formbricksThumbnails = await fetchFormbricksThumbnailMap();
-  } catch (error) {
-    console.warn(
-      `[curated-events] Could not fetch Formbricks thumbnails; continuing without them: ${
-        error instanceof Error ? error.message : "unknown error"
-      }`,
-    );
+  const formbricksThumbnails = new Map<string, string>();
+  if (isStaticThumbnailBuild) {
+    try {
+      const thumbnails = await fetchFormbricksThumbnailMap();
+      for (const [responseId, url] of thumbnails) {
+        formbricksThumbnails.set(responseId, url);
+      }
+    } catch (error) {
+      console.warn(
+        `[curated-events] Could not fetch Formbricks thumbnails; continuing without them: ${
+          error instanceof Error ? error.message : "unknown error"
+        }`,
+      );
+    }
   }
 
   return Promise.all(

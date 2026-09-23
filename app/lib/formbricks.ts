@@ -3,8 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const FORMBRICKS_HOST = "https://formbricks.ethtokyo.org";
-// Only the SSG build sets this. Serverless runtimes must not attempt to write
-// thumbnails or load sharp during request handling.
+// Only the SSG build sets this. Runtime targets do not write optimized copies during request handling.
 const thumbnailOutputDir = process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR;
 
 type FormbricksResponse = {
