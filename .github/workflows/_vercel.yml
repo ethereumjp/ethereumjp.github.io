@@ -37,7 +37,7 @@ jobs:
   vercel:
     if: inputs.target == 'preview' || inputs.target == 'production'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     environment: ${{ inputs.target }}
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -51,7 +51,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Link Vercel project
-        run: pnpm dlx vercel@latest link --yes --project="$VERCEL_PROJECT_ID" --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN"
+        run: pnpm dlx vercel@latest link --yes --project="$VERCEL_PROJECT_ID" --scope="$VERCEL_ORG_ID" --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Vercel output
         run: pnpm build:vercel
         env:
