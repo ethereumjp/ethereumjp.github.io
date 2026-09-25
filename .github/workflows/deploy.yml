@@ -80,7 +80,7 @@ jobs:
   deploy-ghpages:
     name: Static mirror
     needs: build
-    if: ${{ github.ref == 'refs/heads/main' && inputs.mirror == true }}
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.mirror == true) }}
     uses: ./.github/workflows/_ghpages.yml
     with:
       enabled: true

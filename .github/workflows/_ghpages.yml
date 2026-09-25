@@ -4,7 +4,6 @@ on:
   workflow_call:
     inputs:
       enabled:
-        description: "Whether to publish the optional mirror"
         required: true
         type: boolean
 
