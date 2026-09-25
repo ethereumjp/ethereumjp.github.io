@@ -45,9 +45,6 @@ const emitEventThumbnailsPlugin = (): Plugin => ({
   // The SSG plugin downloads thumbnails while rendering routes in its
   // generateBundle hook. Run after it so the staged images become build assets.
   enforce: "post",
-  async buildStart() {
-    await rm(eventThumbnailStagingDir, { recursive: true, force: true });
-  },
   generateBundle: {
     order: "post",
     handler: async function () {
@@ -73,6 +70,20 @@ const emitEventThumbnailsPlugin = (): Plugin => ({
   },
   async closeBundle() {
     await rm(eventThumbnailStagingDir, { recursive: true, force: true });
+  },
+});
+
+const preloadEventThumbnailsPlugin = (): Plugin => ({
+  name: "preload-event-thumbnails",
+  apply: "build",
+  // This runs before SSG so every thumbnail request has settled before pages
+  // render. Failed requests deliberately use the event-card fallback.
+  async buildStart() {
+    await rm(eventThumbnailStagingDir, { recursive: true, force: true });
+    process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR = eventThumbnailStagingDir;
+
+    const { fetchCuratedEvents } = await import("./app/lib/curated-events");
+    await fetchCuratedEvents();
   },
 });
 
@@ -162,6 +173,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       ...basePlugins,
       honox(),
+      preloadEventThumbnailsPlugin(),
       ssg({ entry }),
       emitEventThumbnailsPlugin(),
     ],

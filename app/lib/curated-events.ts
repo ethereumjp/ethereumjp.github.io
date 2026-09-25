@@ -1,7 +1,4 @@
-import {
-  cacheEventThumbnail,
-  fetchFormbricksThumbnailMap,
-} from "@/lib/formbricks";
+import { cacheEventThumbnail, fetchFormbricksThumbnailMap } from "./formbricks";
 
 export type CuratedEvent = {
   id: string;
@@ -104,27 +101,7 @@ const isFormbricksPrivateStorageUrl = (url: string): boolean =>
 const isStaticThumbnailBuild = Boolean(
   process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR,
 );
-
-const resolvePublicThumbnailUrl = async (
-  url: string,
-): Promise<string | undefined> => {
-  try {
-    const response = await fetch(url, {
-      method: "HEAD",
-      redirect: "follow",
-      signal: AbortSignal.timeout(5000),
-    });
-    const contentType = response.headers.get("content-type") ?? "";
-
-    if (response.ok && contentType.startsWith("image/")) {
-      return url;
-    }
-  } catch {
-    // Unreachable or non-image URLs fall back to the placeholder in the UI.
-  }
-
-  return undefined;
-};
+const thumbnailDownloadConcurrency = 4;
 
 const resolveEventThumbnail = async (
   event: CuratedEvent,
@@ -151,11 +128,13 @@ const resolveEventThumbnail = async (
       return `/api/event-thumbnail?url=${encodeURIComponent(sourceUrl)}`;
     }
 
-    return cacheEventThumbnail(
+    const cachedThumbnail = await cacheEventThumbnail(
       sourceUrl,
       { name: event.name, startDate: event.startDate },
       formbricksPat,
     );
+
+    return cachedThumbnail;
   }
 
   // Airtable attachment URLs are retrieved at request time on runtime targets.
@@ -170,7 +149,35 @@ const resolveEventThumbnail = async (
     startDate: event.startDate,
   });
 
-  return cachedThumbnail ?? resolvePublicThumbnailUrl(sourceUrl);
+  return cachedThumbnail;
+};
+
+const resolveEventThumbnails = async (
+  events: CuratedEvent[],
+  formbricksThumbnails: Map<string, string>,
+): Promise<CuratedEvent[]> => {
+  const resolvedEvents = [...events];
+  let nextIndex = 0;
+
+  const worker = async (): Promise<void> => {
+    while (nextIndex < events.length) {
+      const index = nextIndex++;
+      const event = events[index];
+      resolvedEvents[index] = {
+        ...event,
+        thumbnail: await resolveEventThumbnail(event, formbricksThumbnails),
+      };
+    }
+  };
+
+  await Promise.all(
+    Array.from(
+      { length: Math.min(thumbnailDownloadConcurrency, events.length) },
+      worker,
+    ),
+  );
+
+  return resolvedEvents;
 };
 
 export const formatEventDate = (
@@ -260,17 +267,37 @@ const loadCuratedEvents = async (): Promise<CuratedEvent[]> => {
     }
   }
 
-  return Promise.all(
-    events.map(async (event) => ({
-      ...event,
-      thumbnail: await resolveEventThumbnail(event, formbricksThumbnails),
-    })),
-  );
+  // SSG awaits this function before it renders either locale. Keep the
+  // downloads bounded: a burst of requests can make Formbricks or Airtable
+  // attachments time out, which previously left a partially built schedule.
+  return resolveEventThumbnails(events, formbricksThumbnails);
 };
 
 let curatedEventsPromise: Promise<CuratedEvent[]> | undefined;
+const staticCuratedEventsPromiseKey = Symbol.for(
+  "ethtokyo.static-curated-events-promise",
+);
+
+type StaticCuratedEventsCache = typeof globalThis & {
+  [staticCuratedEventsPromiseKey]?: Promise<CuratedEvent[]>;
+};
 
 export const fetchCuratedEvents = (): Promise<CuratedEvent[]> => {
+  if (isStaticThumbnailBuild) {
+    const cache = globalThis as StaticCuratedEventsCache;
+    cache[staticCuratedEventsPromiseKey] ??= loadCuratedEvents().catch(
+      (error) => {
+        console.warn(
+          `[curated-events] Could not fetch Airtable events; using the fallback schedule: ${
+            error instanceof Error ? error.message : "unknown error"
+          }`,
+        );
+        return [];
+      },
+    );
+    return cache[staticCuratedEventsPromiseKey];
+  }
+
   curatedEventsPromise ??= loadCuratedEvents().catch((error) => {
     console.warn(
       `[curated-events] Could not fetch Airtable events; using the fallback schedule: ${

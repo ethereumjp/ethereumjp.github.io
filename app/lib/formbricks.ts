@@ -3,6 +3,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const FORMBRICKS_HOST = "https://formbricks.ethtokyo.org";
+const thumbnailFetchTimeoutMs = 30_000;
+const thumbnailFetchAttempts = 3;
 // Only the SSG build sets this. Runtime targets do not write optimized copies during request handling.
 const thumbnailOutputDir = process.env.ETHTOKYO_EVENT_THUMBNAIL_DIR;
 
@@ -103,45 +105,60 @@ export const cacheEventThumbnail = async (
     return undefined;
   }
 
-  try {
-    const { default: sharp } = await import("sharp");
-    const response = await fetch(sourceUrl, {
-      headers: apiKey ? { "x-api-key": apiKey } : undefined,
-      signal: AbortSignal.timeout(10000),
-    });
+  const { default: sharp } = await import("sharp");
 
-    if (!response.ok) {
-      return undefined;
+  for (let attempt = 1; attempt <= thumbnailFetchAttempts; attempt++) {
+    try {
+      const response = await fetch(sourceUrl, {
+        headers: apiKey ? { "x-api-key": apiKey } : undefined,
+        signal: AbortSignal.timeout(thumbnailFetchTimeoutMs),
+      });
+
+      if (!response.ok) {
+        throw new Error(`thumbnail request returned ${response.status}`);
+      }
+
+      const contentType = response.headers.get("content-type") ?? "";
+      if (!contentType.startsWith("image/")) {
+        throw new Error(`thumbnail response is not an image (${contentType})`);
+      }
+
+      const optimizedImage = await sharp(
+        Buffer.from(await response.arrayBuffer()),
+      )
+        .rotate()
+        .resize({
+          width: 320,
+          height: 160,
+          fit: "contain",
+          background: { r: 0, g: 0, b: 0, alpha: 0 },
+          withoutEnlargement: true,
+        })
+        .webp({ quality: 80, effort: 6 })
+        .toBuffer();
+      const fingerprint = createHash("sha256")
+        .update(optimizedImage)
+        .digest("hex")
+        .slice(0, 10);
+      const filename = buildThumbnailFilename(fileInfo, fingerprint);
+      await mkdir(thumbnailOutputDir, { recursive: true });
+      await writeFile(join(thumbnailOutputDir, filename), optimizedImage);
+
+      return `/images/2026/eventthumbnails/${filename}`;
+    } catch (error) {
+      if (attempt === thumbnailFetchAttempts) {
+        console.warn(
+          `[event-thumbnail] Could not cache ${sourceUrl} after ${thumbnailFetchAttempts} attempts: ${
+            error instanceof Error ? error.message : "unknown error"
+          }`,
+        );
+        return undefined;
+      }
+
+      // Back off briefly so a slow origin is not hit by another burst.
+      await new Promise((resolve) => setTimeout(resolve, attempt * 500));
     }
-
-    const contentType = response.headers.get("content-type") ?? "";
-    if (!contentType.startsWith("image/")) {
-      return undefined;
-    }
-
-    const optimizedImage = await sharp(
-      Buffer.from(await response.arrayBuffer()),
-    )
-      .rotate()
-      .resize({
-        width: 320,
-        height: 160,
-        fit: "contain",
-        background: { r: 0, g: 0, b: 0, alpha: 0 },
-        withoutEnlargement: true,
-      })
-      .webp({ quality: 80, effort: 6 })
-      .toBuffer();
-    const fingerprint = createHash("sha256")
-      .update(optimizedImage)
-      .digest("hex")
-      .slice(0, 10);
-    const filename = buildThumbnailFilename(fileInfo, fingerprint);
-    await mkdir(thumbnailOutputDir, { recursive: true });
-    await writeFile(join(thumbnailOutputDir, filename), optimizedImage);
-
-    return `/images/2026/eventthumbnails/${filename}`;
-  } catch {
-    return undefined;
   }
+
+  return undefined;
 };
