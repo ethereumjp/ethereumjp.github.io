@@ -12,6 +12,7 @@ import { defineConfig, loadEnv, type Plugin } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const entry = "./app/server.ts";
+const renderEntry = "./app/server-render.ts";
 const basePlugins = [tailwindcss(), tsconfigPaths()];
 // The SSG plugin runs an internal Vite server. Writing generated files under
 // public/ can restart that server while it is closing and leave the build alive.
@@ -118,7 +119,7 @@ export default defineConfig(({ mode }) => {
         ...basePlugins,
         honox(),
         nodeBuild({
-          entry,
+          entry: renderEntry,
           port: 10000,
         }),
       ],

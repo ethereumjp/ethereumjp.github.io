@@ -33,7 +33,7 @@ export default createRoute(async (c) => {
   });
   const contentType = response.headers.get("content-type") ?? "";
 
-  if (!response.ok || !contentType.startsWith("image/")) {
+  if (!response.ok || !response.body || !contentType.startsWith("image/")) {
     return c.text("Thumbnail not found", 404);
   }
 
