@@ -59,9 +59,9 @@ the reusable CI workflow in [`.github/workflows/_ci.yml`](.github/workflows/_ci.
 - Pull requests deploy a Vercel preview via [`deploy.yml`](.github/workflows/deploy.yml) and [`_vercel.yml`](.github/workflows/_vercel.yml).
 - Pushes to `main` deploy production through the same target-aware workflow.
 - Pushes to `main` also request a Render deployment for the exact passing commit through [`_render.yml`](.github/workflows/_render.yml).
-- CI checks run through [`deploy.yml`](.github/workflows/deploy.yml) and [`_ci.yml`](.github/workflows/_ci.yml); the static Pages build is enabled only when the mirror is requested.
+- CI checks run through [`deploy.yml`](.github/workflows/deploy.yml) and [`_ci.yml`](.github/workflows/_ci.yml); pushes to `main` also build and publish the static GitHub Pages mirror.
 - Vercel builds the source with `pnpm build:vercel`, preserving the Hono server function and allowing server/edge routes.
-- An optional, manual GitHub Pages mirror is available through [`_ghpages.yml`](.github/workflows/_ghpages.yml).
+- The GitHub Pages mirror is deployed through [`_ghpages.yml`](.github/workflows/_ghpages.yml) after each successful push to `main`.
 
 ### Setup
 
@@ -77,7 +77,7 @@ the reusable CI workflow in [`.github/workflows/_ci.yml`](.github/workflows/_ci.
 Render runtime environment variables are declared in [`render.yaml`](render.yaml) and must be filled in on the Render service. Render runs `pnpm install --frozen-lockfile && pnpm build:render`, then `pnpm start:render`.
 
 To enable the Pages mirror, configure **Settings → Pages → Build and deployment** to use
-**GitHub Actions**, then manually run the optional mirror workflow from the Actions tab.
+**GitHub Actions**. It will publish after successful pushes to `main`.
 
 ## License
 

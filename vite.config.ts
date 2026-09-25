@@ -42,6 +42,9 @@ const buildTimeEnvDefine = (
 const emitEventThumbnailsPlugin = (): Plugin => ({
   name: "emit-event-thumbnails",
   apply: "build",
+  // The SSG plugin downloads thumbnails while rendering routes in its
+  // generateBundle hook. Run after it so the staged images become build assets.
+  enforce: "post",
   async buildStart() {
     await rm(eventThumbnailStagingDir, { recursive: true, force: true });
   },
