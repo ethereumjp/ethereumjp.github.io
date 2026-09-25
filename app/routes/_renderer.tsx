@@ -32,7 +32,11 @@ export default jsxRenderer(({ children }, c) => {
           `,
           }}
         />
-        <link href="/static/style.css" rel="stylesheet" />
+        {import.meta.env.PROD ? (
+          <link href="/static/style.css" rel="stylesheet" />
+        ) : (
+          <script type="module" src="/app/style.css" />
+        )}
         {import.meta.env.PROD ? (
           <script type="module" src="/static/client.js"></script>
         ) : (

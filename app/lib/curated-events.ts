@@ -26,19 +26,19 @@ export type CuratedEvent = {
 type AirtableCurateFields = {
   Featured?: string;
   "Response ID"?: string;
-  "Event Name"?: string;
-  "Event Description"?: string;
-  "Event Type"?: string;
-  "Event Start Date"?: string;
-  "Event Start Time (HH:MM)"?: string;
-  "Event End Date (if multiple days)"?: string;
-  "Event End Time (HH:MM)"?: string;
-  "Event Link"?: string;
+  "Event name"?: string;
+  "Event description"?: string;
+  "Event type"?: string;
+  "Event starts on"?: string;
+  "Event starts at (HH:MM)"?: string;
+  "Event ends on (if multiple days)"?: string;
+  "Event ends at (HH:MM)"?: string;
+  "Event link"?: string;
   "Thumbnail URL"?: string | AirtableAttachment[];
   "Venue Name"?: string;
   "Venue Address"?: string;
-  "Venue Link"?: string;
-  "Link to Event Group Chat"?: string;
+  "Venue link"?: string;
+  "Link to Group Chat"?: string;
   "Organizer name"?: string;
   "Organizer email"?: string;
 };
@@ -70,8 +70,8 @@ const getAirtableThumbnailUrl = (
 
 const mapRecord = (record: AirtableRecord): CuratedEvent | null => {
   const { fields } = record;
-  const name = fields["Event Name"];
-  const startDate = fields["Event Start Date"];
+  const name = fields["Event name"];
+  const startDate = fields["Event starts on"];
 
   if (!name || !startDate) {
     return null;
@@ -81,18 +81,18 @@ const mapRecord = (record: AirtableRecord): CuratedEvent | null => {
     id: record.id,
     responseId: fields["Response ID"],
     name,
-    description: fields["Event Description"],
-    type: fields["Event Type"],
-    link: fields["Event Link"],
+    description: fields["Event description"],
+    type: fields["Event type"],
+    link: fields["Event link"],
     thumbnail: getAirtableThumbnailUrl(fields["Thumbnail URL"]),
     startDate,
-    endDate: fields["Event End Date (if multiple days)"],
-    startTime: fields["Event Start Time (HH:MM)"],
-    endTime: fields["Event End Time (HH:MM)"],
+    endDate: fields["Event ends on (if multiple days)"],
+    startTime: fields["Event starts at (HH:MM)"],
+    endTime: fields["Event ends at (HH:MM)"],
     venueName: fields["Venue Name"],
     venueAddress: fields["Venue Address"],
-    venueLink: fields["Venue Link"],
-    groupChatLink: fields["Link to Event Group Chat"],
+    venueLink: fields["Venue link"],
+    groupChatLink: fields["Link to Group Chat"],
     organizerName: fields["Organizer name"],
     organizerEmail: fields["Organizer email"],
   };
@@ -145,6 +145,10 @@ const resolveEventThumbnail = async (
   if (isFormbricksPrivateStorageUrl(sourceUrl)) {
     if (!formbricksPat) {
       return undefined;
+    }
+
+    if (!isStaticThumbnailBuild) {
+      return `/api/event-thumbnail?url=${encodeURIComponent(sourceUrl)}`;
     }
 
     return cacheEventThumbnail(
