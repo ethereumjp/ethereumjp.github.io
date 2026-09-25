@@ -26,21 +26,21 @@ export type CuratedEvent = {
 type AirtableCurateFields = {
   Featured?: string;
   "Response ID"?: string;
-  "1. Event Name"?: string;
-  "2. Event Description"?: string;
-  "3. Event Type"?: string;
-  "4. Event Start Date"?: string;
-  "5. Event Start Time (HH:MM)"?: string;
-  "6. Event End Date (if multiple days)"?: string;
-  "7. Event End Time (HH:MM)"?: string;
-  "8. Event Link"?: string;
-  "9. Event thumbnail or logo"?: string | AirtableAttachment[];
-  "10. Venue Name"?: string;
-  "11. Venue Address"?: string;
-  "12. Venue Link"?: string;
-  "13. Link to Event Group Chat"?: string;
-  "14. Organizer name"?: string;
-  "15. Organizer email"?: string;
+  "Event Name"?: string;
+  "Event Description"?: string;
+  "Event Type"?: string;
+  "Event Start Date"?: string;
+  "Event Start Time (HH:MM)"?: string;
+  "Event End Date (if multiple days)"?: string;
+  "Event End Time (HH:MM)"?: string;
+  "Event Link"?: string;
+  "Thumbnail URL"?: string | AirtableAttachment[];
+  "Venue Name"?: string;
+  "Venue Address"?: string;
+  "Venue Link"?: string;
+  "Link to Event Group Chat"?: string;
+  "Organizer name"?: string;
+  "Organizer email"?: string;
 };
 
 type AirtableAttachment = {
@@ -58,7 +58,7 @@ type AirtableResponse = {
 };
 
 const getAirtableThumbnailUrl = (
-  thumbnail: AirtableCurateFields["9. Event thumbnail or logo"],
+  thumbnail: AirtableCurateFields["Thumbnail URL"],
 ): string | undefined => {
   if (typeof thumbnail === "string") {
     return thumbnail;
@@ -70,8 +70,8 @@ const getAirtableThumbnailUrl = (
 
 const mapRecord = (record: AirtableRecord): CuratedEvent | null => {
   const { fields } = record;
-  const name = fields["1. Event Name"];
-  const startDate = fields["4. Event Start Date"];
+  const name = fields["Event Name"];
+  const startDate = fields["Event Start Date"];
 
   if (!name || !startDate) {
     return null;
@@ -81,20 +81,20 @@ const mapRecord = (record: AirtableRecord): CuratedEvent | null => {
     id: record.id,
     responseId: fields["Response ID"],
     name,
-    description: fields["2. Event Description"],
-    type: fields["3. Event Type"],
-    link: fields["8. Event Link"],
-    thumbnail: getAirtableThumbnailUrl(fields["9. Event thumbnail or logo"]),
+    description: fields["Event Description"],
+    type: fields["Event Type"],
+    link: fields["Event Link"],
+    thumbnail: getAirtableThumbnailUrl(fields["Thumbnail URL"]),
     startDate,
-    endDate: fields["6. Event End Date (if multiple days)"],
-    startTime: fields["5. Event Start Time (HH:MM)"],
-    endTime: fields["7. Event End Time (HH:MM)"],
-    venueName: fields["10. Venue Name"],
-    venueAddress: fields["11. Venue Address"],
-    venueLink: fields["12. Venue Link"],
-    groupChatLink: fields["13. Link to Event Group Chat"],
-    organizerName: fields["14. Organizer name"],
-    organizerEmail: fields["15. Organizer email"],
+    endDate: fields["Event End Date (if multiple days)"],
+    startTime: fields["Event Start Time (HH:MM)"],
+    endTime: fields["Event End Time (HH:MM)"],
+    venueName: fields["Venue Name"],
+    venueAddress: fields["Venue Address"],
+    venueLink: fields["Venue Link"],
+    groupChatLink: fields["Link to Event Group Chat"],
+    organizerName: fields["Organizer name"],
+    organizerEmail: fields["Organizer email"],
   };
 };
 
