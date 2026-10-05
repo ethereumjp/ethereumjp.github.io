@@ -149,16 +149,6 @@ export const contributors = [
     ],
   },
   {
-    name: "Yuji",
-    handle: "yujiym.eth",
-    role: "Developer",
-    href: [
-      "https://x.com/yujiym",
-      "https://github.com/yujiym",
-      "https://web3.bio/yujiym.eth",
-    ],
-  },
-  {
     name: "Yosuke",
     handle: "y0suke.eth",
     role: "Developer",
