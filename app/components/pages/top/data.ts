@@ -141,21 +141,11 @@ export const contributors = [
   {
     name: "Yuta",
     handle: "kurotaky.eth",
-    role: "Lead",
+    role: "Ops",
     href: [
       "https://twitter.com/kurotaky",
       "https://github.com/kurotaky",
       "https://mo-fu.org/",
-    ],
-  },
-  {
-    name: "Yuji",
-    handle: "yujiym.eth",
-    role: "Developer",
-    href: [
-      "https://x.com/yujiym",
-      "https://github.com/yujiym",
-      "https://web3.bio/yujiym.eth",
     ],
   },
   {
@@ -167,18 +157,6 @@ export const contributors = [
       "https://github.com/yosukemiyata",
       "https://web3.bio/y0suke.eth",
     ],
-  },
-  {
-    name: "Yudai",
-    handle: "reblock.eth",
-    role: "Ecosystem",
-    href: ["https://twitter.com/9dai_5", "https://bio.reblock.eth.limo"],
-  },
-  {
-    name: "Toshi",
-    handle: "toshihiko.eth",
-    role: "Ecosystem",
-    href: ["https://twitter.com/tolehico", "https://web3.bio/toshihiko.eth"],
   },
   {
     name: "Torrent",
